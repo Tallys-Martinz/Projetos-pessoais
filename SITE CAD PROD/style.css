@@ -1,7 +1,3 @@
-/* =========================================== */
-/* === STYLES.CSS - VISUAL PROFISSIONAL/MODERNO (FINAL) === */
-/* =========================================== */
-
 /* VARIÁVEIS DE COR (MODO CLARO - Base Profissional) */
 :root {
     --cor-primaria: #0077B6;      
@@ -391,10 +387,9 @@ h1 {
     text-align: right !important; 
 }
 
-/* RESUMO TOTAL */
 #resumo-total {
     text-align: right;
-    margin: 20px 0 0; /* Remove margem inferior para dar espaço à paginação */
+    margin: 20px 0 0;
     padding: 20px;
     border-top: 3px solid var(--cor-primaria); 
     font-size: 1.3em;
@@ -613,15 +608,15 @@ body.dark-mode .recycle-card {
     width: 100%;
 }
 
-/* === ESTILOS PARA PAGINAÇÃO (NOVO) === */
+/* ESTILOS PARA PAGINAÇÃO*/
 .pagination-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0; /* Ajustado */
-    padding: 20px; /* Adiciona padding aqui */
-    border-top: none; /* Remove a borda superior */
-    border-radius: 0 0 16px 16px; /* Ajusta a borda inferior do card */
+    margin-top: 0; 
+    padding: 20px;
+    border-top: none;
+    border-radius: 0 0 16px 16px; 
     background-color: var(--cor-fundo-card);
 }
 
