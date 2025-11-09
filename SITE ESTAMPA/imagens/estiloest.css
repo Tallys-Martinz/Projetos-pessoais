@@ -1,4 +1,3 @@
-/* ====== BODY E FUNDO ====== */
 body {
     margin: 0;
     padding: 0;
@@ -6,7 +5,6 @@ body {
     background-image: url(imagens/fundo2.jpg);
 }
 
-/* ====== TOPO ====== */
 #topo {
     position: relative;
     width: 100%;
@@ -19,19 +17,17 @@ body {
     object-fit: cover;
 }
 
-/* Overlay flexível */
 #topo-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Instagram à esquerda */
+    align-items: flex-start; 
     justify-content: center;
     gap: 15px;
     padding: 20px 15px;
 }
 
-/* ====== TÍTULO COM ANIMAÇÃO ====== */
 .amsg {
     clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
     border: 6px double #a47f5d;
@@ -40,7 +36,7 @@ body {
     padding: 3px;
     width: 100%;
     background-image: linear-gradient(to right, rgb(32, 126, 32), rgb(93, 137, 93));
-    font-size: clamp(2.5rem, 5.5vw, 5rem); /* maior no desktop e mobile */
+    font-size: clamp(2.5rem, 5.5vw, 5rem);
     font-weight: 1000;
     color: #a47f5d;
     font-family: "Great Vibes", cursive;
@@ -56,8 +52,6 @@ body {
     animation: slideIn 2s;
 }
 
-
-/* ====== INSTAGRAM ====== */
 .abox {
     animation: slideIn 2s;
 }
@@ -78,7 +72,7 @@ body {
     background-image: linear-gradient(to right, rgb(19, 98, 19), rgb(93, 137, 93));
     clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
     border: 6px double #a47f5d;
-    padding: 4px 18px; /* aumenta espaço para não cortar letras */
+    padding: 4px 18px;
     max-width: 100%;
     box-sizing: border-box;
     transition: background-color 0.3s, color 0.3s;
@@ -89,7 +83,6 @@ body {
     color: rgb(236, 226, 226);
 }
 
-/* ====== BOTÃO ====== */
 #botão {
     background-image: linear-gradient(to right, rgb(19, 98, 19), rgb(77, 114, 77));
     border: 8px double #a47f5d;
@@ -117,14 +110,12 @@ body {
     color: rgb(236, 226, 226);
 }
 
-/* ====== LINHAS ====== */
 #linha, #linha2 {
     width: 100%;
     height: 10px;
     background-image: url(imagens/xadrez.jpeg);
 }
 
-/* ====== SEÇÕES ====== */
 section {
     display: flex;
     flex-direction: column;
@@ -195,7 +186,6 @@ section {
     text-align: left;
 }
 
-/* ====== IMAGEM FINAL COMPLETA ====== */
 #estampa2 {
     width: 100%;
     height: auto;
@@ -203,7 +193,6 @@ section {
     object-fit: cover;
 }
 
-/* ====== RESPONSIVIDADE ====== */
 @media (max-width: 1024px) {
     .amsg { font-size: clamp(2.5rem, 5vw, 4.5rem); }
     .titulo { font-size: clamp(2rem, 3.5vw, 35px); }
@@ -230,24 +219,23 @@ section {
     #sobre3 { font-size: 14px; padding: 5px 15px; max-width: 100%; }
 }
 
-/* ====== VÍDEO RESPONSIVO E CENTRALIZADO ====== */
 .video-container {
   background-image: url(imagens/fundov1.jpeg);
   height: 240px;
   display: flex;
   align-items: center;
-  justify-content: center; /* centraliza horizontalmente */
-  margin-top: 50px;          /* espaço acima e abaixo do vídeo */
+  justify-content: center; 
+  margin-top: 50px;          
   border-top: 8px solid #674c33;
   border-bottom: 7px solid #674c33;;
 }
 
 .video-responsivo { 
   box-shadow: 2px 1px 1px 1px;    
-  width: 225px;        /* ocupa até 90% do contêiner */
-  max-width: 800px;  /* largura máxima */
-  height: 400px;      /* mantém proporção */        /* cantos arredondados */
-  transform: rotate(90deg); /* gira 15° para a direita */
+  width: 225px;        
+  max-width: 800px; 
+  height: 400px;      
+  transform: rotate(90deg); 
 }
 
 #fundo3 {

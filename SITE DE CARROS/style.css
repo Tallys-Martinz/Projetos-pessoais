@@ -140,15 +140,13 @@ a {
         flex-wrap: nowrap; /* impede empilhar os blocos */
     }
 
-    /* Cada bloco é uma coluna independente */
     #inf, #caixasv {
-        width: 70%;                /* cada bloco ocupa metade da tela */
+        width: 70%;               
         display: flex;
-        flex-direction: column;    /* título em cima, lista abaixo */
+        flex-direction: column;    
         box-sizing: border-box;
     }
 
-    /* Títulos completos sem quebrar linha */
     #inf h2, #caixasv h2, #titulosv {
         font-size: 20px;
         margin-bottom: 1px;
@@ -156,7 +154,7 @@ a {
         word-wrap: break-word;     /* evita overflow */
     }
 
-    /* Lista de cada bloco organizada verticalmente */
+  
     #inf ul, #caixasv ul {
         display: flex;
         flex-direction: column;
@@ -292,27 +290,27 @@ section {
 
 .subir {
     opacity: 0;
-    transform: translateY(40px); /* começa mais embaixo */
-    animation: subir 1s ease-out forwards; /* animação */
+    transform: translateY(40px); 
+    animation: subir 1s ease-out forwards;
 }
 
 .subir2 {
     opacity: 0;
-    transform: translateY(20px); /* começa mais embaixo */
-    animation: subir2 1s ease-out forwards; /* animação */
+    transform: translateY(20px); 
+    animation: subir2 1s ease-out forwards; 
 }
 
 @keyframes subir {
     to {
         opacity: 1;
-        transform: translateY(0); /* volta para posição normal */
+        transform: translateY(0); 
     }
 }
 
 @keyframes subir2 {
     to {
         opacity: 1;
-        transform: translateY(0); /* volta para posição normal */
+        transform: translateY(0); 
     }
 }
 
@@ -379,7 +377,7 @@ section {
   animation: fadeIn3 10s ease forwards;
 }
 
-/* Sua animação existente */
+
 @keyframes fadeIn3 {
   from {
     opacity: 0;
@@ -416,15 +414,13 @@ section {
   border-radius: 30px;
 }
 
-/* ======== Animações iniciais ======== */
 .aparecer3 {
      opacity: 0;
 }
 .aparecer4 {
-    opacity: 0; /* invisível inicialmente */
+    opacity: 0;
 }
 
-/* ======== Fade-in do título ======== */
 .aparecer3.ativo {
     animation: fadeIn3 2s forwards;
 }
@@ -435,7 +431,6 @@ section {
     }
 }
 
-/* ======== Fade-in do parágrafo ======== */
 .aparecer4.ativo {
     animation: fadeIn4 3s forwards;
 }
@@ -466,7 +461,7 @@ section {
 }
 
 .carro {
-    position: relative; /* necessário para posicionar o texto sobre a imagem */
+    position: relative; 
     overflow: hidden;
     height: 250px;
     width: 370px;
@@ -480,7 +475,6 @@ section {
     border: 1px inset rgb(255, 255, 255);
 }
 
-/* Classe adicionada via JS quando entra na tela */
 .carro.aparecer {
     animation: fadeIn5 1s ease forwards;
 }
