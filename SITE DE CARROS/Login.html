@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+      font-family: Arial, sans-serif;
+      background-image: linear-gradient(to bottom, rgb(17, 17, 17), rgb(0, 0, 0));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+     }
+    .login-container {
+      background: #000000;
+      padding: 30px;
+      border-radius: 10px;
+      border: 1px solid #ffffff;
+      box-shadow: 1px 10px 10px rgba(0,0,0,0.1);
+      width: 500px;
+      height: 300px;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+        color: white;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ffffff;
+      border-radius: 50px;
+      background-color: #0e0d0d;
+      color: white;
+    }
+
+    .login-container input[type="submit"] {
+      width: 50%;
+      padding: 15px;
+      background: #0f1634;
+      border: none;
+      color: rgb(255, 255, 255);
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 25px;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border: 1px solid #ffffff;
+    }
+    .login-container input[type="submit"]:hover {
+      background: #0e1227;
+    }
+    
+    </style>
+</head>
+<body>
+    <div class="login-container">
+    <h2>LOGIN</h2>
+      <label for="username">Usuário</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="password">Senha</label>
+      <input type="password" id="password" name="password" required>
+
+       <a href="index.html" rel="prev"><input type="submit" value="Entrar"></a>
+  </div>
+</body>
+</html>

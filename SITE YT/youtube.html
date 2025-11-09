@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>youtube</title>
+    <link rel="shortcut icon" href="youtube.ico.png" type="image/x-icon">
+    <link rel="stylesheet" href="estiloyt.css">
+</head>
+<body>
+    <header>
+        <nav>
+
+            <div id="menu"><span class="menu-icon" onclick="openMenu()">&#9776;</span></div>
+
+            <!-- Menu lateral -->
+            <div id="mySidebar" class="sidebar">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeMenu()"><p id="sair">&#9776;</p></a>
+                <a href="#"><img class="im" height="27" src="imagens/inicio.svg" alt="inicio"> Início</a>
+                <a href="#"><img class="im" height="27" src="imagens/shorts.svg"alt="shorts"> Shorts</a>
+                <a href="#"><img class="im" height="27" src="imagens/incricoes.svg" alt="inscrições"> Inscrições</a>
+                <a href="#"><img class="im" height="27" src="imagens/perfil.svg" alt="perfil"> Você</a>
+
+                <div class="linha"></div>
+
+                <p class="ti">Você > </p>
+
+                <a href="#"><img class="im" height="27" src="imagens/historico.svg" alt="inicio"> Histórico</a>
+                <a href="#"><img class="im" height="27" src="imagens/playlist.svg"alt="shorts"> Playlist</a>
+                <a href="#"><img class="im" height="27" src="imagens/Seusvideos.svg" alt="inscrições"> Seus Videos</a>
+                <a href="#"><img class="im" height="27" src="imagens/assistirmaistarde.svg" alt="perfil"> Assistir mais tarde</a>
+                <a href="#"><img class="im" height="27" src="imagens/gostei.svg" alt="perfil"> Videos com "Gostei"</a>
+                
+                <div class="linha"></div>
+
+                <p class="ti">Explorar </p>
+
+                <a href="#"><img class="im" height="27" src="imagens/shopping.svg" alt="inicio"> Shopping</a>
+                <a href="#"><img class="im" height="27" src="imagens/musicas.svg"alt="shorts"> Músicas</a>
+                <a href="#"><img class="im" height="27" src="imagens/filmes.svg"alt="shorts"> Filmes</a>
+                <a href="#"><img class="im" height="27" src="imagens/ao vivo.svg" alt="inscrições"> Ao Vivo</a>
+                <a href="#"><img class="im" height="27" src="imagens/jogos.svg" alt="perfil"> Jogos</a>
+                <a href="#"><img class="im" height="27" src="imagens/noticias.svg" alt="perfil"> Notícias</a>
+
+                <div class="linha"></div>
+
+                <p class="suporte">Sobre a imprensa Direitos autorais Entre em contato Criadores de conteúdo Publicidade Desenvolvedores</p>
+
+                <p class="suporte">Termos privacidade Política e segurança Como funciona o YouTube Testar os novos recursos</p>
+
+                <p id="suporte2">@ 2025 Google LLC</p>
+
+            </div>
+
+            <script>
+            function openMenu() {
+                document.getElementById("mySidebar").style.width = "250px";
+            }
+
+            function closeMenu() {
+                document.getElementById("mySidebar").style.width = "0";
+            }
+            </script>
+
+            <div id="logo">
+                <img height="30" width="150" src="youtube.png" alt="youtube">
+                     <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Pesquisar">
+                        <div class="search-button">
+                        <!-- Ícone de lupa em SVG -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C15.07 5.59 12.47 3 9.25 3S3.43 5.59 3.43 8.39c0 2.8 2.6 5.39 5.82 5.39 1.61 0 3.09-.66 4.14-1.73l.27.28v.79l4.99 4.99 1.49-1.49-5-5zm-6.25 0C7.01 14 5 12 5 9.75S7.01 5.5 9.25 5.5 13.5 7.51 13.5 9.75 11.49 14 9.25 14z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="bolinha">
+                    <img height="24" src="imagens/microfone.svg" alt="Microfone">
+                </div>
+                <a href="#"><button id="conta">T</button></a>
+
+                        
+                        
+                                <button class="inv" id="btnNotificaçao">
+                                    <div class="notificaçao" id="notificaçao"><img height="23" src="imagens/not.svg" alt="notificação"></div>
+                                </button>
+                        
+                        
+
+                        <button class="inv" onclick="abrircriar()">
+                                <div id="criar"><span id="maior"> + </span><p class="sep"> Criar</p></div>
+                        </button>
+
+<div id="Criar">
+    <a id="opc1" href="#" rel="next">
+      <img id="imgc" src="imagens/enviar.svg" alt="enviarvideo" height="27px">Enviar Video
+    </a>
+    <a id="opc2" href="#" rel="next">
+      <img id="imgc" src="imagens/ao vivo.svg" alt="Transmitir ao vivo" height="25px">Transmitir ao vivo
+    </a>
+    <a id="opc3" href="#" rel="next">
+      <img id="imgc" src="imagens/postagem.svg" alt="Criar postagem" height="25px">Criar postagem
+    </a>
+</div>
+
+<div class="menun" id="menuNotificaçao">
+    <p>Notificações</p>
+    <div id="dconf">
+        <img id="iconf" height="23px" src="imagens/conf.svg" alt="configurações">
+        <img src="" alt="">
+    </div>
+</div>
+
+<script>
+  function abrircriar() {
+    const Criar = document.getElementById("Criar");
+    Criar.style.display = Criar.style.display === "none" ? "block" : "none";
+  }
+</script>
+
+<script>
+    const btn = document.getElementById("btnNotificaçao");
+    const menun = document.getElementById("menuNotificaçao");
+    
+    btn.addEventListener("click", () => {
+      menun.style.display = menun.style.display === "block" ? "none" : "block";
+    });
+    
+    document.addEventListener("click", (e) => {
+      if (!btn.contains(e.target) && !menun.contains(e.target)) {
+        menun.style.display = "none";
+      }
+    });
+</script>
+
+
+                </div>
+            </div>
+
+        </nav>
+    </header>
+    <main>
+        <section>
+                <nav id="icones">
+                    <div class="i">
+                        <a href="inicio.html" rel="next">
+                            <div>
+                                <img height="27" src="imagens/inicio.svg" alt="inicio">
+                                <p class="t1">Início</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="i">
+                         <a href="shorts.html" rel="next">
+                             <div>
+                                <img height="27" src="imagens/shorts.svg"alt="shorts">
+                                <p class="t1">Shorts</p>
+                             </div>
+                         </a>
+                    </div>
+                    <div class="i">
+                        <a href="inscricoes.html" rel="next">
+                            <div>
+                                <img height="27" src="imagens/incricoes.svg" alt="inscrições">
+                                <p class="t1">Inscrições</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="i">
+                        <a href="voce.html" rel="next">
+                            <div>
+                                <img height="27" src="imagens/perfil.svg" alt="perfil">
+                                <p class="t1">Você</p>
+                            </div>
+                        </a>
+                    </div>
+                </nav>
+        </section>
+        <section>
+            <div class="opcoes">
+                <div>
+                    <p class="op1">Tudo</p>
+                </div>
+                <div>
+                    <p class="op1">Enviados</p>
+                </div>
+                <div>
+                    <p class="op1">Assistidos</p>
+                </div>
+                <div>
+                    <p class="op1">Novidades</p>
+                </div>
+                <div>
+                    <p class="op1">Ao vivo</p>
+                </div>
+                <div>
+                    <p class="op1">Estudos</p>
+                </div>
+                <div>
+                    <p class="op1">Notícias</p>
+                </div>
+                <div>
+                    <p class="op1">Carros</p>
+                </div>
+                <div>
+                    <p class="op1">Esportes</p>
+                </div>
+                <div>
+                    <p class="op1">Jogos</p>
+                </div>
+                <div>
+                    <p class="op1">Marketing</p>
+                </div>
+                <div>
+                    <p class="op1">Podcast</p>
+                </div>
+                <div>
+                    <p class="op1">Musicas</p>
+                </div>
+                <div>
+                    <p class="op1">Filmes</p>
+                </div>
+                <div>
+                    <p class="op1">Lugares</p>
+                </div>
+                <div>
+                    <p class="op1">Produtos</p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <nav id="conteudo">
+                <div class="videos">
+                    <div>
+                        <a href="https://www.youtube.com/watch?v=pXAGoP2G2vE" ref="next"><img height="240px" src="imagens/v1.png" alt="video1">
+                        <div class="canal"> <div class="texto"><p class="ajuste">Projeto Tela de Login HTML e CSS</p><p class="ajuste2">DevClub / Programação</p><p class="ajuste3">Visualizações 100 Mil • há 1 semana</p></div></div></a>
+                        
+                    </div>
+                    <div>
+                        <a href="https://www.youtube.com/watch?v=7PWyKkXw99I" ref="next">
+                            <img height="240px" src="imagens/v2.png" alt="video2">
+                            <div class="canal"> <div class="texto"><p class="ajuste">Vivendo a Rotina do CEO de uma Empresa Bilionária</p><p class="ajuste2">João Curry</p><p class="ajuste3">Visualizações 100 Mil • há 1 semana</p></div></div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="https://www.youtube.com/watch?v=cf7EsG6jwvk" ref="next">
+                            <img height="240px" width="432px" src="imagens/v3.png" alt="video3">
+                            <div class="canal"> <div class="texto"><p class="ajuste">Notebook Gamer de R$ 4.500 vs Notebook Gamer de R$ 50.000 </p><p class="ajuste2">MW Informática</p><p class="ajuste3">Visualizações 100 Mil • há 1 semana</p></div></div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="https://www.youtube.com/watch?v=x8XFQA6fNQU" ref="next">
+                            <img height="240px" width="433px" src="imagens/v4.png" alt="videos4">
+                            <div class="canal"> <div class="texto"><p class="ajuste">O que Não Te Contaram Sobre Computadores Quânticos</p><p class="ajuste2">Cortes Do Flow [Oficial]</p><p class="ajuste3">Visualizações 100 Mil • há 1 semana</p></div></div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="https://www.youtube.com/watch?v=RsHrbW4G18E" ref="next">
+                            <img height="240px" src="imagens/v5.png" alt="videos5">
+                            <div class="canal"> <div class="texto"><p class="ajuste">Todos Os Cursos De Faculdade Explicados</p><p class="ajuste2">Novos Clássicos</p><p class="ajuste3">Visualizações 100 Mil • há 1 semana</p></div></div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="https://www.youtube.com/watch?v=_7mJDIFYe0o" ref="next">
+                            <img height="242px" src="imagens/v6.png" alt="videos6">
+                            <div class="canal"> <div class="texto"><p class="ajuste">Como Aprender Programação Do 0</p><p class="ajuste2">dewoibau</p><p class="ajuste3">Visualizações 100 Mil • há 1 semana</p></div></div>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </section>
+    </main>
+</body>
+</html>

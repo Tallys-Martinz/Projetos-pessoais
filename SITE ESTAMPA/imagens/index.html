@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estampa</title>
+<link rel="stylesheet" href="estiloest.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="animate.css">
+<link rel="shortcut icon" href="" type="image/x-icon">
+</head>
+<body>
+
+<header>
+    <div id="topo">
+        <img id="estampa1" src="imagens/topo.jpeg" alt="Estampa">
+
+        <div id="topo-overlay">
+            <!-- Título com animação original -->
+            <div class="amsg" id="TituloP">Historia da Estampa Exclusiva</div>
+
+            <!-- Instagram à esquerda com slide-in e hover -->
+            <a href="https://www.instagram.com/mariacoelhogo?igsh=c3hnam95YjZ0Ymdx">
+                <div class="abox" id="sobre3">
+                    <img class="espaço" height="25px" src="imagens/insta.png.png" alt="">
+                    @Ateliê Art's Daqui DiCasa
+                </div>
+            </a>
+
+            <!-- Botão abaixo do Instagram -->
+            <button class="inv" id="scroll-btn">
+                <div id="botão">Vamos lá?</div>
+            </button>
+        </div>
+
+        <script>
+          const botao = document.getElementById('scroll-btn');
+          botao.addEventListener('click', () => {
+            const scrollPosition = document.querySelector('section').offsetTop;
+            window.scrollTo({ top: scrollPosition, top: 300, behavior: 'smooth' });
+          });
+        </script>
+    </div>
+</header>
+
+<main id="linha"></main>
+
+<div class="video-container">
+  <video class="video-responsivo" controls>
+    <source src="videos/Estampav.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div id="fundo3"></div>
+
+<section>
+    <div class="aboxc left" id="conteudo1">
+        <div class="T">
+            <h2 class="titulo">Coleção Biscoito Quebrador de Flor</h2>
+        </div>
+        <p class="texto">Estampa desenvolvida exclusivamente para o nosso ateliê, que tem como tema; um elemento da nossa culinária local que vem sendo passado de geração em geração. <br><br> Esta estampa tem ligação direta com minha história,principalmente com minha infância. Na minha família a única mulher das quais eu convive em Niquelândia norte goiano por volta de 1976 quando eu era só uma garotinha conhecendo parte do mundo, que ainda preserva essa tradição é a minha mãe, todas as outras já são falecidas, inclusive a minha avó materna, uma das responsáveis pela memória afetiva que guardo dos momentos em que todos se reuniam para fazer os bolos no forno à lenha tradição familiar de mais de 3 gerações antes da minha, mas também uma tradição regional, de um tempo que as pessoas se reuniam na casa uma das outras cada um fornecendo parte dos ingredientes, ao redor de um forno caipira de lenha, era momento de conversar, rezar e fortalecer os laços e as amizades, cuja a época e as dificuldades deixava as pessoas mais distantes fisicamente mas muito mais conectadas emocionalmente. <br><br> Deste tempo trago, não só memórias afetivas de casa de vó, como trago também a memória olfativa do momento em que os biscoitos estavam assando bem como se fecho os olhos ainda consigo me lembrar das gargalhadas daquelas senhoras e até do meu avo que cuidava de aquecer o forno. Pessoas sofridas de uma época onde o trabalho braçal era a única opção, mais nunca infelizes.</p>
+
+        <main id="linha"></main>
+    </div>
+
+    <div class="aboxc right" id="conteudo2">
+        <div class="T">
+            <h2 class="titulo">A Estampa</h2>
+        </div>
+        <p class="texto">E porque uma estampa com esse elemento? Sempre quis retratar e compartilhar um pedacinho da casa dos meus avos, pelo encanto que ali eu via com toda tenda de serviço que possuía, la havia cheiro de bolo assando, cheiro de garapa fervendo no tacho, farinha torrada na trempe, café torrado e moído no moinho manual, porem tudo isso só são memórias de infância bem mais pelo cheiro que pelo recurso visual. <br><br>Percebendo a escassez de registros desses elementos, principalmente porque não consigo mais ter na memória visual como era a flor do biscoito da minha vó, resolvi desenvolver uma estampa com as flores do biscoito que minha mãe desenha, para que assim possamos e passaremos a ter mais um recurso visual para alem dos biscoitos. Com essa estampa nosso tradicional biscoito quebrador traz também um atrativo a mais para nossa cultura e para os nossos visitantes, que é um tecido com uma estampa pra chamar de nossa, uma vez que esse biscoito permeia todos os lares do nosso município, e faz parte das mesas de quem mantém a tradição desenhando-os ou comprando-os. <br><br>Sendo assim com o desenvolvimento dessa estampa, criei peças para vestir nossas mesas e apresentar opções de um produto personalizado que conta nossa historia através de diversas opções de peças para nossos visitantes.</p>
+
+        <main id="linha"></main>
+    </div>
+
+    <div class="aboxc left" id="conteudo3">
+        <div class="T">
+            <h2 class="titulo">Agradecimentos e Memórias</h2>
+        </div>
+        <p class="texto">E para você que esta lendo essa apresentação, usando a estampa ou foi presenteado por alguém saiba que neste momento estou compartilhando um pedaço da minha historia e da historia de outras dezenas de famílias Niquelandences, ou melhor, Josephinas pessoas originarias da região quando o município ainda se chamava São José do Tocantins.</p>
+
+        <main id="linha"></main>
+    </div>
+
+    <script>
+      const boxes = document.querySelectorAll('.aboxc');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      });
+      boxes.forEach(box => observer.observe(box));
+    </script>
+</section>
+
+<main id="linha2"></main>
+
+<footer>
+    <img id="estampa2" src="imagens/principalf.jpeg" alt="estampa">
+</footer>
+
+</body>
+</html>
+

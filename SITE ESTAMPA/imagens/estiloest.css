@@ -1,0 +1,265 @@
+/* ====== BODY E FUNDO ====== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url(imagens/fundo2.jpg);
+}
+
+/* ====== TOPO ====== */
+#topo {
+    position: relative;
+    width: 100%;
+}
+
+#estampa1 {
+    width: 100%;
+    height: auto;
+    max-height: 700px;
+    object-fit: cover;
+}
+
+/* Overlay flexível */
+#topo-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Instagram à esquerda */
+    justify-content: center;
+    gap: 15px;
+    padding: 20px 15px;
+}
+
+/* ====== TÍTULO COM ANIMAÇÃO ====== */
+.amsg {
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+    border: 6px double #a47f5d;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    width: 100%;
+    background-image: linear-gradient(to right, rgb(32, 126, 32), rgb(93, 137, 93));
+    font-size: clamp(2.5rem, 5.5vw, 5rem); /* maior no desktop e mobile */
+    font-weight: 1000;
+    color: #a47f5d;
+    font-family: "Great Vibes", cursive;
+    white-space: normal;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 2px 3px 0 black;
+    max-width: 100%;
+    line-height: 2.5;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.amsg {
+    animation: slideIn 2s;
+}
+
+
+/* ====== INSTAGRAM ====== */
+.abox {
+    animation: slideIn 2s;
+}
+
+@keyframes slideIn {
+    0% { transform: translateX(-50%); }
+    50% { transform: translateX(0); }
+}
+
+#sobre3 {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    background-image: linear-gradient(to right, rgb(19, 98, 19), rgb(93, 137, 93));
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+    border: 6px double #a47f5d;
+    padding: 4px 18px; /* aumenta espaço para não cortar letras */
+    max-width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#sobre3:hover {
+    background-image: linear-gradient(to right, rgb(14, 69, 14), rgb(81, 120, 81));
+    color: rgb(236, 226, 226);
+}
+
+/* ====== BOTÃO ====== */
+#botão {
+    background-image: linear-gradient(to right, rgb(19, 98, 19), rgb(77, 114, 77));
+    border: 8px double #a47f5d;
+    border-radius: 50px;
+    width: 250px;
+    height: 80px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 2px 4px 0 black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    align-self: center;
+}
+
+.inv {
+    background: transparent;
+    border: none;
+    color: inherit;
+}
+
+#botão:hover {
+    background-image: linear-gradient(to right, rgb(12, 79, 12), rgb(86, 124, 86));
+    color: rgb(236, 226, 226);
+}
+
+/* ====== LINHAS ====== */
+#linha, #linha2 {
+    width: 100%;
+    height: 10px;
+    background-image: url(imagens/xadrez.jpeg);
+}
+
+/* ====== SEÇÕES ====== */
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 20px;
+}
+
+.aboxc {
+    opacity: 0;
+    transition: all 3s ease;
+}
+
+.aboxc.left { transform: translateX(-50%); }
+.aboxc.right { transform: translateX(50%); }
+
+.aboxc.show { opacity: 1; transform: translateX(0); }
+
+#conteudo1 {
+    margin-top: 150px;
+    width: 100%;
+    max-width: 700px;
+    border: 4px double #755a44;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 1px 1px 7px 2px;
+    background-image: linear-gradient(to right, rgb(255,255,255), rgb(251,232,220));
+}
+
+#conteudo2 {
+    margin-top: 35px;
+    width: 100%;
+    max-width: 700px;
+    border: 4px double #755a44;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 1px 1px 7px 2px;
+    background-image: linear-gradient(to right, rgb(255,255,255), rgb(251,232,220));
+}
+
+#conteudo3 {
+    margin-top: 35px;
+    width: 100%;
+    max-width: 700px;
+    border: 4px double #755a44;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 1px 1px 7px 2px;
+    background-image: linear-gradient(to right, rgb(255,255,255), rgb(251,232,220));
+}
+
+.T { background-image: linear-gradient(to right, rgb(95, 133, 95), rgb(30, 144, 30));
+    box-shadow: 1px 3px 7px 1px;
+    
+ }
+
+.titulo {
+    color: white;
+    padding: 10px 15px;
+    font-size: clamp(2rem, 4vw, 40px);
+    font-family: "Great Vibes", cursive;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 2px 7px 0 black;
+}
+
+.texto {
+    font-size: 30px;
+    padding: 8px;
+    text-align: left;
+}
+
+/* ====== IMAGEM FINAL COMPLETA ====== */
+#estampa2 {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 1024px) {
+    .amsg { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+    .titulo { font-size: clamp(2rem, 3.5vw, 35px); }
+    .texto { font-size: 14px; }
+    #botão { width: 200px; height: 70px; font-size: 22px; }
+    #sobre3 { font-size: 16px; padding: 5px 15px; }
+}
+
+@media (max-width: 768px) {
+    .amsg { font-size: clamp(2.2rem, 5vw, 4rem); }
+    .titulo { font-size: clamp(1.8rem, 3.2vw, 30px); }
+    .texto { font-size: 13px; }
+    #botão { width: 180px; height: 60px; font-size: 20px; }
+    #sobre3 { font-size: 15px; padding: 5px 15px; }
+}
+
+@media (max-width: 480px) {
+    #topo-overlay { align-items: flex-start; gap: 10px; padding: 10px 15px; }
+    .amsg { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2; white-space: normal; max-width: 100%; }
+    .titulo { font-size: clamp(1.6rem, 4vw, 28px); }
+    .texto { font-size: 12px; }
+    #botão { width: 150px; height: 50px; font-size: 18px; }
+    .aboxc { width: 95%; }
+    #sobre3 { font-size: 14px; padding: 5px 15px; max-width: 100%; }
+}
+
+/* ====== VÍDEO RESPONSIVO E CENTRALIZADO ====== */
+.video-container {
+  background-image: url(imagens/fundov1.jpeg);
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centraliza horizontalmente */
+  margin-top: 50px;          /* espaço acima e abaixo do vídeo */
+  border-top: 8px solid #674c33;
+  border-bottom: 7px solid #674c33;;
+}
+
+.video-responsivo { 
+  box-shadow: 2px 1px 1px 1px;    
+  width: 225px;        /* ocupa até 90% do contêiner */
+  max-width: 800px;  /* largura máxima */
+  height: 400px;      /* mantém proporção */        /* cantos arredondados */
+  transform: rotate(90deg); /* gira 15° para a direita */
+}
+
+#fundo3 {
+    border-top: 7px solid #674c33;
+    border-bottom: 7px solid #674c33;
+    margin-top: 50px;
+    background-image: url(imagens/fundov.jpeg);
+    height: 70px;
+    width: 100%;
+}
+
+amam {
+    color: rgb(219, 176, 135);
+}
+

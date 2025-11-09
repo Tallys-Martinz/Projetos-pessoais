@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produtos - Web Avançado</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Produtos</h1>
+
+        <div class="quick-access-panel">
+            <button id="btn-abrir-lixeira" class="btn btn-secondary-acao">
+                🗑️ Lixeira (<span id="contador-lixeira">0</span>)
+            </button>
+            <button id="theme-toggle" class="btn btn-secondary-acao" title="Alternar Tema">☀️</button>
+        </div>
+        <div class="card dashboard-card">
+            <h2>Métricas de Inventário</h2>
+            <div class="metricas-grid">
+                
+                <div class="metrica">
+                    <span class="metrica-valor" id="total-produtos-unicos">0</span>
+                    <span class="metrica-titulo">Itens Únicos Cadastrados</span>
+                </div>
+                
+                <div class="metrica">
+                    <span class="metrica-valor" id="preco-medio-unitario">R$ 0,00</span>
+                    <span class="metrica-titulo">Preço Médio Unitário</span>
+                </div>
+                
+                <div class="metrica">
+                    <span class="metrica-valor" id="categoria-mais-valiosa">N/D</span>
+                    <span class="metrica-titulo">Categoria de Maior Valor Total</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="card chart-card">
+            <h2>Distribuição de Estoque por Categoria (Valor Total)</h2>
+            <div class="chart-container">
+                <canvas id="distribuicao-estoque-chart"></canvas>
+            </div>
+        </div>
+        <div class="card input-card">
+            <h2>Adicionar Novo Produto</h2>
+            <form id="form-produto">
+                <div class="input-group">
+                    <label for="produto-id">ID do Produto (Pode ter letras)</label>
+                    <input type="text" id="produto-id" required>
+                </div>
+                <div class="input-group">
+                    <label for="produto-nome">Nome do Produto</label>
+                    <input type="text" id="produto-nome" required>
+                </div>
+                <div class="input-group">
+                    <label for="produto-categoria">Categoria</label>
+                    <select id="produto-categoria" required>
+                        <option value="" disabled selected>Selecione uma categoria</option>
+                        <option value="Eletronicos">Eletrônicos</option>
+                        <option value="Alimentos">Alimentos</option>
+                        <option value="Vestuario">Vestuário</option>
+                        <option value="Servicos">Serviços</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="produto-quantidade">Quantidade</label>
+                    <input type="number" id="produto-quantidade" value="1" min="0" required>
+                </div>
+                <div class="input-group">
+                    <label for="produto-preco">Preço Unitário (Ex: 49.99)</label>
+                    <input type="text" id="produto-preco" placeholder="Use ponto (.) ou vírgula (,)" required>
+                </div>
+                <button type="submit" id="btn-adicionar" class="btn btn-primary">Adicionar Produto</button>
+            </form>
+        </div>
+
+        <div class="card table-card">
+            <h2>Produtos Cadastrados (<span id="contador-produtos">0</span>)</h2>
+            
+            <div class="input-group search-group">
+                <label for="barra-pesquisa">Pesquisar por ID ou Nome:</label>
+                <input type="text" id="barra-pesquisa" placeholder="Digite o ID ou o nome do produto...">
+            </div>
+
+            <div class="input-group filter-group">
+                <label for="filtro-categoria">Filtrar por Categoria:</label>
+                <select id="filtro-categoria">
+                    <option value="Todos">Todos</option>
+                    <option value="Eletronicos">Eletrônicos</option>
+                    <option value="Alimentos">Alimentos</option>
+                    <option value="Vestuario">Vestuário</option>
+                    <option value="Servicos">Serviços</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+
+            <div class="tools-config-container">
+
+                <div class="data-tools">
+                    <button id="btn-exportar" class="btn btn-secondary-acao">⬇️ Exportar JSON</button>
+                    <input type="file" id="input-importar" accept=".json" style="display: none;">
+                    <button id="btn-importar" class="btn btn-secondary-acao">⬆️ Importar JSON</button>
+                </div>
+                
+                <div class="column-config">
+                    <button id="toggle-config-btn" class="btn btn-secondary-acao">⚙️ Colunas</button>
+                    
+                    <div id="column-checkboxes" class="column-checkboxes-panel hidden">
+                        </div>
+                </div>
+
+            </div>
+            <div class="table-wrapper">
+                <table id="tabela-produtos">
+                    <thead>
+                        <tr>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+            
+            <div id="resumo-total">
+                <strong>VALOR TOTAL DO ESTOQUE (FILTRADO):</strong> <span id="valor-total-estoque">R$ 0,00</span>
+            </div>
+            
+            <div class="pagination-controls">
+                <div class="page-size-control">
+                    <label for="page-size">Itens por página:</label>
+                    <select id="page-size">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="99999">Todos</option>
+                    </select>
+                </div>
+                
+                <div class="page-navigation">
+                    <button id="prev-page-btn" class="btn btn-secondary-acao" disabled>← Anterior</button>
+                    <span id="page-info">Página 1 de 1</span>
+                    <button id="next-page-btn" class="btn btn-secondary-acao" disabled>Próxima →</button>
+                </div>
+            </div>
+            </div>
+
+    </div>
+
+    <div id="lixeira-modal" class="modal-overlay hidden-modal">
+        <div class="modal-content recycle-card">
+            
+            <div class="modal-header">
+                <h2 id="lixeira-titulo">🗑️ Lixeira (<span id="contador-lixeira-modal">0</span>)</h2>
+                <button id="btn-fechar-lixeira" class="btn-fechar">X</button>
+            </div>
+            
+            <div class="table-wrapper">
+                <table id="tabela-lixeira">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lixeira-body">
+                        </tbody>
+                </table>
+            </div>
+            <button id="btn-limpar-lixeira" class="btn btn-danger-acao">Limpar Lixeira Permanentemente</button>
+            
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
