@@ -1,71 +1,96 @@
-// ===== CONFIGURAÇÃO =====
+// ===== CONFIG =====
 const ADMIN_CONFIG = {
-    SENHA: "1234",       // SENHA DO PAINEL
+    SENHA: "1234",
     STORAGE_KEY: "devburguer_admin",
     SESSION_HOURS: 24
 };
 
+// ===== VARIÁVEL PARA ARMAZENAR PEDIDO PENDENTE =====
+let pedidoParaFinalizar = null;
+
 // ===== AUTENTICAÇÃO =====
 function isValidSession() {
     try {
-        const data = JSON.parse(localStorage.getItem(ADMIN_CONFIG.STORAGE_KEY));
+        const raw = sessionStorage.getItem(ADMIN_CONFIG.STORAGE_KEY);
+        if (!raw) return false;
+        const data = JSON.parse(raw);
         return data?.token === ADMIN_CONFIG.SENHA && Date.now() < data.expires;
-    } catch { return false; }
+    } catch {
+        return false;
+    }
 }
 
 function createSession() {
-    localStorage.setItem(ADMIN_CONFIG.STORAGE_KEY, JSON.stringify({
+    sessionStorage.setItem(ADMIN_CONFIG.STORAGE_KEY, JSON.stringify({
         token: ADMIN_CONFIG.SENHA,
         expires: Date.now() + (ADMIN_CONFIG.SESSION_HOURS * 60 * 60 * 1000)
     }));
 }
 
 function clearSession() {
-    localStorage.removeItem(ADMIN_CONFIG.STORAGE_KEY);
+    sessionStorage.removeItem(ADMIN_CONFIG.STORAGE_KEY);
 }
 
+// ===== MODAL DE LOGIN =====
 function openLoginModal() {
     const modal = document.getElementById('admin-login');
-    if (modal) {
-        modal.classList.remove('hidden');
-        setTimeout(() => document.getElementById('admin-pass')?.focus(), 100);
-        document.body.style.overflow = 'hidden';
-    }
+    const painel = document.getElementById('painel-conteudo');
+
+    if (modal) modal.classList.remove('hidden');
+    if (painel) painel.classList.add('hidden');
+
+    setTimeout(() => {
+        const input = document.getElementById('admin-pass');
+        if (input) {
+            input.focus();
+            input.select();
+        }
+    }, 100);
+
+    document.body.style.overflow = 'hidden';
 }
 
 function closeLoginModal() {
     const modal = document.getElementById('admin-login');
-    if (modal) {
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
-        const input = document.getElementById('admin-pass');
-        const error = document.getElementById('login-error');
-        if (input) input.value = '';
-        if (error) error.classList.add('hidden');
-    }
+    const painel = document.getElementById('painel-conteudo');
+
+    if (modal) modal.classList.add('hidden');
+    if (painel) painel.classList.remove('hidden');
+
+    document.body.style.overflow = '';
+}
+
+function cancelarLogin() {
+    window.location.href = "index.html";
 }
 
 function handleLogin(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
+
     const input = document.getElementById('admin-pass');
     const error = document.getElementById('login-error');
+
     if (!input) return;
-    
+
     if (input.value.trim() === ADMIN_CONFIG.SENHA) {
         createSession();
         closeLoginModal();
-        
-        toggleInteractions(true);
+        unlockPanel();
 
-
-        atualizarInterfaceAdmin(localStorage.getItem("statusLoja") || "aberto");
-        carregarPedidos();
-        
+        if (error) error.classList.add('hidden');
+        input.value = '';
+        console.log("✅ Login realizado com sucesso");
     } else {
-        if (error) error.classList.remove('hidden');
-        input.classList.add('border-red-400');
-        setTimeout(() => input.classList.remove('border-red-400'), 1500);
+        if (error) {
+            error.classList.remove('hidden');
+            error.textContent = "❌ Senha incorreta. Tente novamente.";
+        }
+        input.classList.add('border-red-500', 'ring-4', 'ring-red-500/20');
+        setTimeout(() => {
+            input.classList.remove('border-red-500', 'ring-4', 'ring-red-500/20');
+        }, 1000);
         input.select();
+        console.warn("❌ Senha incorreta");
     }
 }
 
@@ -74,181 +99,239 @@ function logout() {
     window.location.href = "index.html";
 }
 
-// Expor funções para onclick no HTML
-window.closeLoginModal = closeLoginModal;
-window.handleLogin = handleLogin;
-window.logout = logout;
+// ===== DESBLOQUEAR PAINEL =====
+function unlockPanel() {
+    const painel = document.getElementById('painel-conteudo');
+    if (painel) {
+        painel.classList.remove('hidden');
+    }
+    atualizarInterfaceAdmin(localStorage.getItem("statusLoja") || "aberto");
+    carregarPedidos();
+    console.log("🔓 Painel desbloqueado");
+}
 
-// ===== PAINEL DE PEDIDOS =====
+// ===== FUNÇÕES DO PAINEL =====
 function alterarStatus(status) {
+    if (!isValidSession()) {
+        openLoginModal();
+        return;
+    }
     localStorage.setItem("statusLoja", status);
     atualizarInterfaceAdmin(status);
 }
 
 function atualizarInterfaceAdmin(status) {
-    const statusText = document.getElementById("status-atual");
-    if (statusText) {
-        statusText.innerText = status === "aberto" ? "ABERTO" : "FECHADO";
-        statusText.style.color = status === "aberto" ? "#16a34a" : "#ef4444";
-    }
+    const el = document.getElementById("status-atual");
+    if (!el) return;
+
+    el.innerText = status === "aberto" ? "ABERTO ✅" : "FECHADO 🔒";
+    el.className = `text-xl font-bold ${status === "aberto" ? "text-green-600" : "text-red-600"}`;
 }
 
 function carregarPedidos() {
-    const listaElement = document.getElementById("pedidos-lista");
-    const pedidos = JSON.parse(localStorage.getItem("pedidosRecebidos")) || [];
+    const lista = document.getElementById("pedidos-lista");
+    if (!lista) return;
 
-    if (!listaElement) return;
-    listaElement.innerHTML = "";
+    const pedidos = JSON.parse(localStorage.getItem("pedidosRecebidos") || "[]");
+    lista.innerHTML = "";
 
     if (pedidos.length === 0) {
-        listaElement.innerHTML = `<div class="col-span-full text-center py-20"><p class="text-gray-400 text-xl italic">Aguardando novos pedidos...</p></div>`;
+        lista.innerHTML = `
+            <div class="col-span-full text-center py-20">
+                <div class="text-6xl mb-4">📭</div>
+                <p class="text-gray-400 text-xl font-medium">Aguardando novos pedidos...</p>
+            </div>`;
         return;
     }
 
-    pedidos.forEach((pedido, index) => {
-        const isPreparando = pedido.status === "preparando";
-        const corBorda = isPreparando ? "border-yellow-400" : "border-green-500";
-        const labelStatus = isPreparando ? 
-            `<span class="text-yellow-600 font-black text-xs animate-pulse">● PREPARANDO</span>` : 
-            `<span class="text-green-600 font-black text-xs">● NOVO PEDIDO</span>`;
-        const textoBtn = isPreparando ? "FINALIZAR PEDIDO" : "INICIAR PREPARO";
-        const classeBtn = isPreparando ? "bg-red-600 hover:bg-red-700 text-white" : "bg-yellow-400 hover:bg-yellow-500 text-black";
-        const acaoBtn = isPreparando ? `removerPedido(${index})` : `prepararPedido(${index})`;
+    pedidos.forEach((p, i) => {
+        const preparando = p.status === "preparando";
+        const borda = preparando ? "border-yellow-400" : "border-green-500";
+        const label = preparando
+            ? `<span class="text-yellow-600 font-black text-xs animate-pulse bg-yellow-50 px-2 py-1 rounded">● PREPARANDO</span>`
+            : `<span class="text-green-600 font-black text-xs bg-green-50 px-2 py-1 rounded">● NOVO PEDIDO</span>`;
+        const btnTexto = preparando ? "FINALIZAR" : "PREPARAR";
+        const btnClass = preparando
+            ? "bg-red-600 hover:bg-red-700 text-white"
+            : "bg-yellow-400 hover:bg-yellow-500 text-black";
+        const acao = preparando ? `abrirModalFinalizado(${JSON.stringify(p).replace(/"/g, '&quot;')})` : `prepararPedido(${i})`;
 
-        const cardHtml = `
-        <div class="bg-white rounded-2xl shadow-xl border-t-[12px] ${corBorda} flex flex-col h-full overflow-hidden transition-all hover:shadow-2xl">
-            <div class="p-5 flex-grow">
-                <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-                    <span class="bg-zinc-800 text-white px-3 py-1 rounded-lg font-mono font-bold">#${pedido.id}</span>
-                    <span class="text-gray-500 font-medium text-sm flex items-center gap-1">🕒 ${pedido.hora}</span>
-                </div>
-                <div class="mb-4">${labelStatus}</div>
-                <div class="space-y-3 mb-5">
-                    <div>
-                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Cliente</span>
-                        <p class="text-xl font-bold text-zinc-900 leading-none">${pedido.cliente}</p>
-                    </div>
-                    <div>
-                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Endereço</span>
-                        <p class="text-zinc-600 text-xl leading-tight font-bold italic">${pedido.endereco}</p>
-                    </div>
-                </div>
-                <div class="bg-zinc-50 rounded-xl p-4 border border-zinc-100">
-                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter block mb-2">Itens</span>
-                    <div class="text-zinc-800 font-medium leading-relaxed">
-                        ${pedido.itens.split('|').join('<div class="border-b border-zinc-200/50 my-1"></div>')}
-                    </div>
-                </div>
+        lista.innerHTML += `
+        <div class="bg-white rounded-2xl shadow-lg border-t-[12px] ${borda} p-5 transition-all hover:shadow-xl border border-gray-100">
+            <div class="flex justify-between items-center mb-3 pb-3 border-b border-gray-100">
+                <span class="font-mono font-bold bg-zinc-800 text-white px-3 py-1 rounded-lg text-sm">#${p.id}</span>
+                <span class="text-sm text-gray-500 font-medium">🕒 ${p.hora}</span>
             </div>
-            <div class="bg-zinc-700 p-5 flex flex-col gap-3">
-                <div class="flex justify-between items-center">
-                    <span class="text-zinc-400 text-xs font-bold uppercase">Total:</span>
-                    <span class="text-white text-2xl font-black">${pedido.total}</span>
+            <div class="mb-3">${label}</div>
+            <div class="mb-2">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Cliente</p>
+                <p class="font-bold text-lg text-gray-800">${p.cliente}</p>
+            </div>
+            <div class="mb-3">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Endereço</p>
+                <p class="text-gray-600 italic">${p.endereco}</p>
+            </div>
+            <div class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Itens</p>
+                <p class="text-sm text-gray-700">${p.itens.split('|').join('<br>')}</p>
+            </div>
+            <div class="flex justify-between items-center pt-3 border-t border-gray-100">
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase">Total</p>
+                    <p class="font-black text-2xl text-green-600">${p.total}</p>
                 </div>
-                <button onclick="${acaoBtn}" class="${classeBtn} w-full py-3 rounded-xl font-black text-sm tracking-widest transition-transform active:scale-95 shadow-lg">
-                    ${textoBtn}
+                <button onclick="${acao}" 
+                    class="${btnClass} px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg">
+                    ${btnTexto}
                 </button>
             </div>
         </div>`;
-        listaElement.innerHTML += cardHtml;
     });
 }
 
-function prepararPedido(index) {
-    let pedidos = JSON.parse(localStorage.getItem("pedidosRecebidos"));
-    if (pedidos?.[index]) {
-        pedidos[index].status = "preparando";
+function prepararPedido(i) {
+    if (!isValidSession()) {
+        openLoginModal();
+        return;
+    }
+    const pedidos = JSON.parse(localStorage.getItem("pedidosRecebidos") || "[]");
+    if (pedidos[i]) {
+        pedidos[i].status = "preparando";
         localStorage.setItem("pedidosRecebidos", JSON.stringify(pedidos));
         carregarPedidos();
     }
 }
 
-function removerPedido(index) {
-    if(confirm("Finalizar e remover este pedido?")) {
-        let pedidos = JSON.parse(localStorage.getItem("pedidosRecebidos"));
-        if (pedidos?.[index]) {
-            pedidos.splice(index, 1);
-            localStorage.setItem("pedidosRecebidos", JSON.stringify(pedidos));
-            carregarPedidos();
+function abrirModalFinalizado(pedido) {
+    if (!isValidSession()) {
+        openLoginModal();
+        return;
+    }
+
+    const modal = document.getElementById('order-complete-modal');
+    if (!modal) {
+        // Fallback se modal não existir
+        if (confirm(`Finalizar pedido #${pedido.id} de ${pedido.cliente}?`)) {
+            removerPedidoDoSistema(pedido);
         }
+        return;
+    }
+
+    // Armazena pedido para confirmar depois
+    pedidoParaFinalizar = pedido;
+
+    // Preenche dados no modal
+    const elId = document.getElementById('modal-pedido-id');
+    const elCliente = document.getElementById('modal-pedido-cliente');
+    const elTotal = document.getElementById('modal-pedido-total');
+    const elPedidosHoje = document.getElementById('modal-pedidos-hoje');
+    const elFaturamento = document.getElementById('modal-faturamento');
+
+    if (elId) elId.textContent = `#${pedido.id}`;
+    if (elCliente) elCliente.textContent = pedido.cliente;
+    if (elTotal) elTotal.textContent = pedido.total;
+
+    // CÁLCULO DE FATURAMENTO
+    const pedidos = JSON.parse(localStorage.getItem("pedidosRecebidos") || "[]");
+    const totalPedidos = pedidos.length;
+
+    const faturamento = pedidos.reduce((acc, p) => {
+        let valorStr = String(p.total).replace('R$', '').trim();
+        const valor = parseFloat(valorStr.replace(',', '.')) || 0;
+        return acc + valor;
+    }, 0);
+
+    const faturamentoFormatado = faturamento.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    if (elPedidosHoje) elPedidosHoje.textContent = totalPedidos;
+    if (elFaturamento) elFaturamento.textContent = `R$ ${faturamentoFormatado}`;
+
+    // Mostra modal
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharModalFinalizado() {
+    const modal = document.getElementById('order-complete-modal');
+    if (modal) modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    pedidoParaFinalizar = null;
+}
+
+function confirmarRemocaoPedido() {
+    if (!pedidoParaFinalizar) return;
+
+    removerPedidoDoSistema(pedidoParaFinalizar);
+    fecharModalFinalizado();
+}
+
+function removerPedidoDoSistema(pedido) {
+    const pedidos = JSON.parse(localStorage.getItem("pedidosRecebidos") || "[]");
+    const index = pedidos.findIndex(p => p.id === pedido.id);
+
+    if (index !== -1) {
+        pedidos.splice(index, 1);
+        localStorage.setItem("pedidosRecebidos", JSON.stringify(pedidos));
+        carregarPedidos();
+        console.log(`✅ Pedido #${pedido.id} finalizado`);
     }
 }
 
-// Expor funções para onclick no HTML
+function removerPedido(i) {
+    if (!isValidSession()) {
+        openLoginModal();
+        return;
+    }
+    const pedidos = JSON.parse(localStorage.getItem("pedidosRecebidos") || "[]");
+    if (pedidos[i]) {
+        pedidos[i].status = "preparando";
+        localStorage.setItem("pedidosRecebidos", JSON.stringify(pedidos));
+        carregarPedidos();
+    }
+}
+
+window.cancelarLogin = cancelarLogin;
+window.closeLoginModal = closeLoginModal;
+window.handleLogin = handleLogin;
+window.logout = logout;
 window.alterarStatus = alterarStatus;
 window.prepararPedido = prepararPedido;
 window.removerPedido = removerPedido;
+window.abrirModalFinalizado = abrirModalFinalizado;
+window.fecharModalFinalizado = fecharModalFinalizado;
+window.confirmarRemocaoPedido = confirmarRemocaoPedido;
 
 // ===== INICIALIZAÇÃO =====
-function initPainel() {
-    atualizarInterfaceAdmin(localStorage.getItem("statusLoja") || "aberto");
-    carregarPedidos();
-    
-    // Botão "Sair" com logout
-    const btnSair = document.getElementById('btn-sair');
-    if (btnSair) {
-        btnSair.onclick = (e) => { e.preventDefault(); logout(); };
-    }
-}
-
-function initAuth() {
-    // Botão flutuante de acesso admin
-    const openBtn = document.getElementById('open-admin-login');
-    if (openBtn) {
-        openBtn.onclick = (e) => {
-            e.preventDefault();
-            if (isValidSession()) {
-                location.href = 'admin.html';
-            } else {
-                openLoginModal();
-            }
-        };
-    }
-
-    // Fecha modal com ESC
+function initAdmin() {
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeLoginModal();
+        if (e.key === 'Escape') {
+            const modalLogin = document.getElementById('admin-login');
+            const modalFinalizado = document.getElementById('order-complete-modal');
+            if (modalFinalizado && !modalFinalizado.classList.contains('hidden')) {
+                fecharModalFinalizado();
+            } else if (modalLogin && !modalLogin.classList.contains('hidden')) {
+                cancelarLogin();
+            }
+        }
     });
 
-    // ✅ CORREÇÃO: Sempre carrega a UI, independente de auth
-    const statusElement = document.getElementById("status-atual");
-    const pedidosElement = document.getElementById("pedidos-lista");
-    
-    if (statusElement || pedidosElement) {
-        // Carrega status e pedidos IMEDIATAMENTE
-        const statusSalvo = localStorage.getItem("statusLoja");
-        atualizarInterfaceAdmin(statusSalvo || "aberto");
-        carregarPedidos();
-    }
-
-    // ✅ Só mostra modal e bloqueia ações se NÃO autenticado em página admin
-    if ((location.pathname.includes('admin.html') || location.pathname.includes('admin')) && !isValidSession()) {
+    // Verifica autenticação
+    if (isValidSession()) {
+        unlockPanel();
+        console.log("✅ Sessão válida - painel liberado");
+    } else {
         openLoginModal();
-        toggleInteractions(false); // Bloqueia botões
+        console.log("🔐 Login necessário - modal aberto");
     }
 }
 
-// ===== EVENTOS =====
-window.addEventListener('load', () => {
-    initAuth();
-});
-
+window.addEventListener('load', initAdmin);
 window.addEventListener('storage', (e) => {
     if (e.key === 'pedidosRecebidos') carregarPedidos();
     if (e.key === 'statusLoja') atualizarInterfaceAdmin(e.newValue);
 });
 
-// ✅ Nova função: controla se botões podem ser clicados
-function toggleInteractions(enabled) {
-    const botoes = document.querySelectorAll(`
-        button[onclick*="alterarStatus"],
-        button[onclick*="prepararPedido"],
-        button[onclick*="removerPedido"]
-    `);
-    botoes.forEach(btn => {
-        btn.disabled = !enabled;
-        btn.style.opacity = enabled ? '1' : '0.5';
-        btn.style.cursor = enabled ? 'pointer' : 'not-allowed';
-        btn.style.pointerEvents = enabled ? 'auto' : 'none';
-    });
-}
+console.log("🔐 Admin.js carregado | Modal de finalização: ATIVO");

@@ -1,88 +1,188 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/output.css" />
-    <title>Painel do Vendedor - Dev Burguer</title>
-    <style>
-        /* Animação do modal */
-        @keyframes fade-in-up {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up { animation: fade-in-up 0.25s ease-out; }
-        #admin-login.hidden { display: none; }
-        #admin-pass:focus { box-shadow: 0 0 0 4px rgba(239,68,68,0.15); }
-    </style>
+    <title>🔐 Admin - Dev Burguer</title>
 </head>
+
+<style>
+    @keyframes bounce-in {
+        0% {
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+        }
+
+        50% {
+            transform: scale(1.02) translateY(-5px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .animate-bounce-in {
+        animation: bounce-in 0.4s ease-out;
+    }
+</style>
+
 <body class="bg-gray-100">
 
-    <!-- 🔐 Modal de Login Admin -->
-    <div id="admin-login" class="fixed inset-0 z-50 hidden" aria-modal="true" role="dialog">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onclick="closeLoginModal()"></div>
-        <div class="relative min-h-full flex items-center justify-center p-4">
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 border border-gray-100 animate-fade-in-up">
-                <div class="text-center mb-6">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-red-500 rounded-xl mb-3">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800">Acesso Restrito</h3>
-                    <p class="text-sm text-gray-500 mt-1">Painel Administrativo</p>
+    <!-- LOGIN -->
+    <div id="admin-login"
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+
+        <!-- Card de LOGIN -->
+        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 border-2 border-gray-200">
+
+            <!-- Header -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-red-500 rounded-2xl mb-4 shadow-xl">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800">🔐 Acesso Restrito</h3>
+                <p class="text-sm text-gray-500 mt-2">Painel Administrativo - Dev Burguer</p>
+            </div>
+
+            <!-- Formulário LOGIN -->
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Senha de Acesso</label>
+                    <input type="password" id="admin-pass"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-center font-mono text-xl tracking-widest focus:border-red-500 focus:ring-4 focus:ring-red-500/20 transition-all"
+                        placeholder="••••" maxlength="10" autocomplete="current-password" required autofocus>
                 </div>
 
-                <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
-                    <div>
-                        <label for="admin-pass" class="sr-only">Senha</label>
-                        <input type="password" id="admin-pass"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 text-center font-mono tracking-widest"
-                            placeholder="••••••" maxlength="20" autocomplete="current-password" required>
-                    </div>
-                    <div id="login-error" class="hidden text-center text-sm text-red-600 font-medium bg-red-50 py-2 px-3 rounded-lg">
-                        Senha incorreta
-                    </div>
-                    <div class="flex gap-3">
-                        <button type="button" onclick="closeLoginModal()" class="flex-1 py-2.5 px-4 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50">Cancelar</button>
-                        <button type="submit" class="flex-1 py-2.5 px-4 bg-red-500 text-white font-semibold rounded-xl hover:bg-red-600">Entrar</button>
-                    </div>
-                </form>
-
-                <div class="mt-5 pt-4 border-t border-gray-100 text-center">
-                    <button onclick="logout()" class="text-xs text-gray-400 hover:text-red-500">Sair da sessão</button>
+                <div id="login-error"
+                    class="hidden bg-red-50 text-red-600 text-sm font-semibold py-3 px-4 rounded-xl text-center border border-red-200">
+                    ❌ Senha incorreta. Tente novamente.
                 </div>
+
+                <!-- Botões LOGIN -->
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="cancelarLogin()"
+                        class="flex-1 py-3 px-4 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-all">
+                        ← Voltar
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-3 px-4 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl">
+                        Entrar →
+                    </button>
+                </div>
+            </form>
+
+            <!-- Footer -->
+            <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+                <p class="text-xs text-gray-400">Acesso exclusivo para administradores</p>
             </div>
         </div>
     </div>
 
-    <!-- 🔘 Botão Flutuante Admin -->
-    <button id="open-admin-login" class="fixed bottom-5 right-5 w-12 h-12 bg-gray-800 hover:bg-gray-700 text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 z-40" title="Painel Admin">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-        </svg>
-    </button>
+    <div id="painel-conteudo" class="hidden">
 
-    <!-- Navegação -->
-    <nav class="bg-zinc-900 p-4 text-white flex justify-between">
-        <h1 class="font-bold">Painel de Pedidos</h1>
-        <a href="index.html" id="btn-sair" class="bg-red-500 px-3 py-1 rounded">Sair</a>
-    </nav>
+        <nav class="bg-zinc-900 p-4 text-white flex justify-between">
+            <h1 class="font-bold text-lg">🎛️ Painel de Pedidos</h1>
+            <a href="index.html" onclick="logout()"
+                class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition font-semibold">Sair</a>
+        </nav>
 
-    <!-- Conteúdo Principal -->
-    <main class="max-w-7xl mx-auto p-4">
-        <div class="bg-white p-4 rounded shadow-md mb-6">
-            <h2 class="text-xl font-bold mb-3">Controle da Loja</h2>
-            <div class="flex items-center gap-4">
-                <span>Status atual: <strong id="status-atual" class="text-lg">Carregando...</strong></span>
-                <button onclick="alterarStatus('aberto')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Abrir Loja</button>
-                <button onclick="alterarStatus('fechado')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Fechar Loja</button>
+        <!-- Conteúdo Principal -->
+        <main class="max-w-7xl mx-auto p-4">
+
+            <!-- Controle de Status -->
+            <div class="bg-white p-5 rounded-xl shadow-lg mb-6 border border-gray-100">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Controle da Loja</h2>
+                <div class="flex flex-wrap items-center gap-4">
+                    <span class="text-gray-600 font-medium">Status:</span>
+                    <strong id="status-atual" class="text-xl font-bold text-gray-400">Carregando...</strong>
+                    <div class="flex gap-3 ml-auto">
+                        <button onclick="alterarStatus('aberto')"
+                            class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-lg font-bold transition shadow-md">
+                            🟢 Abrir Loja
+                        </button>
+                        <button onclick="alterarStatus('fechado')"
+                            class="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-lg font-bold transition shadow-md">
+                            🔴 Fechar Loja
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Pedidos -->
+            <h2 class="text-xl font-bold mb-4 text-gray-800">📋 Pedidos Recebidos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pedidos-lista">
+            </div>
+
+        </main>
+    </div>
+
+    <div id="order-complete-modal"
+        class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div
+            class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 border-2 border-gray-100 animate-bounce-in">
+
+            <!-- Ícone de Sucesso -->
+            <div class="text-center mb-6">
+                <div
+                    class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full mb-4 shadow-xl">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800">✅ Pedido Finalizado!</h3>
+                <p class="text-gray-500 mt-2">O pedido foi removido da fila</p>
+            </div>
+
+            <!-- Resumo do Pedido -->
+            <div class="bg-gray-50 rounded-2xl p-4 mb-6 border border-gray-100">
+                <div class="flex justify-between items-center mb-3 pb-3 border-b border-gray-200">
+                    <span class="text-sm font-semibold text-gray-500">Número do Pedido</span>
+                    <span class="font-mono font-bold text-gray-800 text-lg" id="modal-pedido-id">#0000</span>
+                </div>
+                <div class="flex justify-between items-center mb-3 pb-3 border-b border-gray-200">
+                    <span class="text-sm font-semibold text-gray-500">Cliente</span>
+                    <span class="font-medium text-gray-700" id="modal-pedido-cliente">-</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm font-semibold text-gray-500">Total Recebido</span>
+                    <span class="font-bold text-green-600 text-xl" id="modal-pedido-total">R$ 0,00</span>
+                </div>
+            </div>
+
+            <!-- Estatísticas -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-center">
+                    <p class="text-xs font-bold text-blue-500 uppercase">Pedidos Hoje</p>
+                    <p class="text-2xl font-bold text-blue-700" id="modal-pedidos-hoje">0</p>
+                </div>
+                <div class="bg-purple-50 border border-purple-100 rounded-xl p-3 text-center">
+                    <p class="text-xs font-bold text-purple-500 uppercase">Faturamento</p>
+                    <p class="text-2xl font-bold text-purple-700" id="modal-faturamento">R$0</p>
+                </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="flex gap-3">
+                <button onclick="fecharModalFinalizado()"
+                    class="flex-1 py-3 px-4 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all">
+                    Cancelar
+                </button>
+                <button onclick="confirmarRemocaoPedido()"
+                    class="flex-1 py-3 px-4 bg-gradient-to-r border-2 border-gray-300 from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-green-700 font-bold rounded-xl transition-all shadow-lg">
+                    ✅ Confirmar
+                </button>
             </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pedidos-lista"></div>
-    </main>
+    </div>
 
-    <!-- Scripts -->
     <script src="admin.js"></script>
 </body>
+
 </html>
