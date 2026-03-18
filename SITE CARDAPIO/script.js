@@ -13,6 +13,7 @@ const spanHora = document.getElementById("date-span");
 const statusText = document.getElementById("status-text");
 const clientNameInput = document.getElementById("client-name");
 const nameWarn = document.getElementById("name-warn");
+const paymentMethodInput = document.getElementById("payment-method");
 
 let cart = [];
 
@@ -191,7 +192,42 @@ function salvarPedidoNoSistema(pedido) {
 
 // FINALIZAR PEDIDO
 if (checkoutBtn) {
+
+    function enviarParaWhatsApp(pedido) {
+        // NUMERO DA LOJA
+        const numeroLoja = "5562985044345";
+
+        const itensFormatados = pedido.itens.split(" | ").map(item => `• ${item.trim()}`).join("\n");
+
+        const mensagem = `
+*🛒 NOVO PEDIDO - ${pedido.id}*
+
+👤 *Cliente:* ${pedido.cliente}
+📍 *Endereço:* ${pedido.endereco}
+
+🍔 *Itens:*
+${itensFormatados}
+
+💰 *Total:* ${pedido.total}
+⏰ *Horário:* ${pedido.hora}
+💳 *Pagamento:* ${pedido.pagamento}
+
+_Obrigado pela preferência!_ 🙌
+`.trim();
+
+        // Limpar número e criar URL ✅ SEM ESPAÇOS
+        const numeroLimpo = numeroLoja.replace(/\D/g, '');
+        const url = `https://wa.me/${numeroLimpo}?text=${encodeURIComponent(mensagem)}`;
+
+        // Abrir Zap com tratamento de pop-up
+        const novaAba = window.open(url, "_blank");
+        if (!novaAba) {
+            alert("⚠️ Pop-up bloqueado! Permita pop-ups para este site e clique em 'Finalizar' novamente.");
+        }
+    }
+
     checkoutBtn.addEventListener("click", function () {
+
         // 🔒 1ª TRAVA: Verifica se loja está aberta
         if (!checkOpen()) {
             if (typeof Toastify !== 'undefined') {
@@ -235,15 +271,27 @@ if (checkoutBtn) {
             addressWarn.classList.add("hidden");
         }
 
+        if (paymentMethodInput && paymentMethodInput.value.trim() === "") {
+            alert("Por favor, selecione uma forma de pagamento.");
+            hasError = true;
+        }
+
+        if (hasError) {
+            alert("Por favor, preencha todos os campos para continuar.");
+            return;
+        }
+
         if (hasError) {
             alert("Por favor, preencha seu nome e endereço para continuar.");
             return;
         }
 
-        // cria e salva o pedido
+        // ✅ Cria e salva o pedido
         const cartItems = cart.map((item) =>
             `${item.name} (${item.quantity})`
         ).join(" | ");
+
+        const pagamentoSelecionado = paymentMethodInput?.value || "Não informado";
 
         const novoPedido = {
             id: Math.floor(Math.random() * 9000) + 1000,
@@ -255,29 +303,32 @@ if (checkoutBtn) {
                 hour: '2-digit',
                 minute: '2-digit'
             }),
+            pagamento: pagamentoSelecionado,
             status: "novo"
         };
 
         const salvo = salvarPedidoNoSistema(novoPedido);
 
         if (salvo) {
+            // 🎉 Feedback visual
             if (typeof Toastify !== 'undefined') {
                 Toastify({
                     text: "✅ Pedido enviado com sucesso!",
                     duration: 4000,
                     style: { background: "#16a34a" }
                 }).showToast();
-            } else {
-                alert("Pedido enviado para o painel!");
             }
 
-            // Limpa carrinho e formulário
+            // 📱 ENVIAR PARA WHATSAPP (NOVO!)
+            enviarParaWhatsApp(novoPedido);
+
+            // 🧹 Limpa carrinho e formulário
             cart = [];
             if (clientNameInput) clientNameInput.value = "";
             if (addressInput) addressInput.value = "";
             updateCartModal();
 
-            // Fecha modal
+            // 🚪 Fecha modal
             if (cartModal) {
                 cartModal.style.display = "none";
             }

@@ -228,10 +228,20 @@
 
             <p class=" text-red-500 hidden" id="address-warn">Digite seu endereço completo</p>
 
+            
+                <p class="font-bold mt-4">Pagamento</p>
+                <select type="text" placeholder="Selecione metodo de pagamento" id="payment-method" class=" border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
+                        <option value="Pix">Pix</option>
+                        <option value="Dinheiro">Dinheiro</option>
+                        <option value="Cartão de Crédito">Cartão de Crédito</option>
+                        <option value="Cartão de Débito">Cartão de Débito</option>
+                </select>
+            
+
             <div class="flex items-center justify-between mt-5 w-full">
                 <button id="close-modal-btn"
                     class=" text-red-800 font-bold hover:scale-110 duration-100">Fechar</button>
-                <button id="checkout-btn"
+                <button onclick="finalizarPedido()" id="checkout-btn"
                     class="bg-green-600 text-white px-4 py-1 rounded hover:scale-110 duration-100 shadow-lg shadow-green-500/50">Finalizar
                     Pedido</button>
             </div>

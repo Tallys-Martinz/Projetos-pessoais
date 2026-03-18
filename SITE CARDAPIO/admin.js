@@ -169,7 +169,7 @@ function carregarPedidos() {
             </div>
             <div class="mb-3">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Endereço</p>
-                <p class="text-gray-600 italic">${p.endereco}</p>
+                <p class="font-bold text-lg text-gray-800">${p.endereco}</p>
             </div>
             <div class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-100">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Itens</p>

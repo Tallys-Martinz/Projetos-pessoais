@@ -30,7 +30,7 @@
     }
 </style>
 
-<body class="bg-gray-100">
+<body class="bg-gray-300">
 
     <!-- LOGIN -->
     <div id="admin-login"
@@ -104,11 +104,11 @@
                     <strong id="status-atual" class="text-xl font-bold text-gray-400">Carregando...</strong>
                     <div class="flex gap-3 ml-auto">
                         <button onclick="alterarStatus('aberto')"
-                            class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-lg font-bold transition shadow-md">
+                            class=" text-white bg-gradient-to-r from-green-800 to-green-600 px-5 py-2.5 rounded-lg font-bold transition shadow-md">
                             🟢 Abrir Loja
                         </button>
                         <button onclick="alterarStatus('fechado')"
-                            class="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-lg font-bold transition shadow-md">
+                            class=" bg-gradient-to-r from-red-800 to-red-700 text-white px-5 py-2.5 rounded-lg font-bold transition shadow-md">
                             🔴 Fechar Loja
                         </button>
                     </div>
@@ -141,7 +141,7 @@
             </div>
 
             <!-- Resumo do Pedido -->
-            <div class="bg-gray-50 rounded-2xl p-4 mb-6 border border-gray-100">
+            <div class="bg-gray-100 rounded-2xl p-4 mb-6 border border-gray-100">
                 <div class="flex justify-between items-center mb-3 pb-3 border-b border-gray-200">
                     <span class="text-sm font-semibold text-gray-500">Número do Pedido</span>
                     <span class="font-mono font-bold text-gray-800 text-lg" id="modal-pedido-id">#0000</span>
@@ -175,7 +175,7 @@
                     Cancelar
                 </button>
                 <button onclick="confirmarRemocaoPedido()"
-                    class="flex-1 py-3 px-4 bg-gradient-to-r border-2 border-gray-300 from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-green-700 font-bold rounded-xl transition-all shadow-lg">
+                    class="flex-1 py-3 px-4 bg-gradient-to-r border-2 border-gray-300 from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold rounded-xl transition-all shadow-lg">
                     ✅ Confirmar
                 </button>
             </div>
