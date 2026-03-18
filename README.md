@@ -1,5 +1,4 @@
 # Projetos-pessoais
-Projetos pessoais
 Obs: Projetos simples
 
 SITE ATLETIC = https://atletica.netlify.app/
