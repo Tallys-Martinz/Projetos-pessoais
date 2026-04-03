@@ -214,25 +214,25 @@ function carregarPedidos() {
             <div class="mb-4">${badge}</div>
             
             <section class="mb-4">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">👤 Cliente</p>
+                <p class="text-xs font-extrabold text-gray-500 uppercase tracking-wide mb-1">👤 Cliente</p>
                 <p class="font-bold text-lg text-gray-800">${Utils.escapeHtml(p.cliente)}</p>
             </section>
             
             <section class="mb-4">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">📍 Endereço</p>
-                <p class="font-medium text-gray-700 leading-relaxed">${Utils.escapeHtml(p.endereco)}</p>
+                <p class="text-xs font-extrabold text-gray-500 uppercase tracking-wide mb-1">📍 Endereço</p>
+                <p class="font-bold text-lg text-gray-800">${Utils.escapeHtml(p.endereco)}</p>
             </section>
             
-            <section class="mb-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">🍔 Itens</p>
-                <div class="space-y-1">${itensHTML}</div>
+            <section class="mb-4 bg-gray-100 p-4 rounded-xl border border-gray-100">
+                <p class="text-xs font-extrabold text-gray-500 uppercase tracking-wide mb-2">🍔 Itens</p>
+                <div class="space-y-1 font-bold">${itensHTML}</div>
             </section>
             
             <footer class="flex justify-between items-center pt-4 border-t border-gray-100">
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase">💰 Total</p>
                     <p class="font-black text-2xl text-green-600">${Utils.escapeHtml(p.total)}</p>
-                    <p class="text-xs text-gray-400 mt-1">💳 ${Utils.escapeHtml(p.pagamento)}</p>
+                    <p class="text-lg text-gray-400 mt-1">💳 ${Utils.escapeHtml(p.pagamento)}</p>
                 </div>
                 <div class="text-right space-y-2">
                     ${btnPrimario}

@@ -113,14 +113,14 @@
 
     <div id="painel-conteudo" class="hidden">
 
-        <nav class="bg-gradient-to-r from-black to-gray-900 p-4 text-white flex justify-between">
+        <nav class="bg-gradient-to-r from-gray-900 to-gray-800 p-4 text-white flex justify-between">
             <h1 class="font-bold text-lg">🎛️ Painel de Pedidos</h1>
             <a href="index.html" onclick="logout()"
                 class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition font-semibold">Sair</a>
         </nav>
 
         <!-- ========== NAVEGAÇÃO POR ABAS ========== -->
-        <nav class="bg-white rounded-xl shadow-md p-1.5 mb-6 flex gap-1 max-w-md mx-auto">
+        <nav class="bg-gradient-to-r from-gray-900 to-gray-800 shadow-md p-1.5 mb-6 flex gap-1 max-w-md mx-auto">
             <button onclick="mudarAba('pedidos')" id="tab-pedidos"
                 class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all bg-blue-600 text-white shadow">📋
                 Pedidos</button>
@@ -145,10 +145,10 @@
                         <strong id="status-atual" class="text-xl font-bold text-gray-400">Carregando...</strong>
                         <div class="flex gap-3 ml-auto">
                             <button onclick="alterarStatus('aberto')"
-                                class="text-white bg-gradient-to-r from-green-800 to-green-600 px-5 py-2.5 rounded-lg font-bold transition shadow-md">🟢
+                                class="text-white bg-gradient-to-r from-green-700 to-green-500 px-5 py-2.5 rounded-lg font-bold hover:bg-gradient-to-r hover:from-green-900 hover:to-green-800 hover:scale-110 duration-100 shadow-md">🟢
                                 Abrir Loja</button>
                             <button onclick="alterarStatus('fechado')"
-                                class="bg-gradient-to-r from-red-800 to-red-700 text-white px-5 py-2.5 rounded-lg font-bold transition shadow-md">🔴
+                                class="bg-gradient-to-r from-red-700 to-red-500 text-white px-5 py-2.5 rounded-lg font-bold hover:bg-gradient-to-r hover:from-red-900 hover:to-red-800 hover:scale-110 duration-100 shadow-md">🔴
                                 Fechar Loja</button>
                         </div>
                     </div>
