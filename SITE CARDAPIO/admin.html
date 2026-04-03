@@ -28,6 +28,32 @@
     .animate-bounce-in {
         animation: bounce-in 0.4s ease-out;
     }
+
+    .aba-conteudo {
+        transition: opacity 0.2s ease;
+    }
+
+    .aba-conteudo.hidden {
+        display: none;
+        opacity: 0;
+    }
+
+    /* Animação suave ao trocar de aba */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .aba-conteudo:not(.hidden) {
+        animation: fadeIn 0.3s ease-out;
+    }
 </style>
 
 <body class="bg-gray-300">
@@ -87,44 +113,261 @@
 
     <div id="painel-conteudo" class="hidden">
 
-        <nav class="bg-zinc-900 p-4 text-white flex justify-between">
+        <nav class="bg-gradient-to-r from-black to-gray-900 p-4 text-white flex justify-between">
             <h1 class="font-bold text-lg">🎛️ Painel de Pedidos</h1>
             <a href="index.html" onclick="logout()"
                 class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition font-semibold">Sair</a>
         </nav>
 
+        <!-- ========== NAVEGAÇÃO POR ABAS ========== -->
+        <nav class="bg-white rounded-xl shadow-md p-1.5 mb-6 flex gap-1 max-w-md mx-auto">
+            <button onclick="mudarAba('pedidos')" id="tab-pedidos"
+                class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all bg-blue-600 text-white shadow">📋
+                Pedidos</button>
+            <button onclick="mudarAba('cardapio')" id="tab-cardapio"
+                class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all text-gray-600 hover:bg-gray-100">📦
+                Cardápio</button>
+            <button onclick="mudarAba('analytics')" id="tab-analytics"
+                class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all text-gray-600 hover:bg-gray-100">📈
+                Analytics</button>
+        </nav>
+
         <!-- Conteúdo Principal -->
         <main class="max-w-7xl mx-auto p-4">
 
-            <!-- Controle de Status -->
-            <div class="bg-white p-5 rounded-xl shadow-lg mb-6 border border-gray-100">
-                <h2 class="text-xl font-bold mb-4 text-gray-800">Controle da Loja</h2>
-                <div class="flex flex-wrap items-center gap-4">
-                    <span class="text-gray-600 font-medium">Status:</span>
-                    <strong id="status-atual" class="text-xl font-bold text-gray-400">Carregando...</strong>
-                    <div class="flex gap-3 ml-auto">
-                        <button onclick="alterarStatus('aberto')"
-                            class=" text-white bg-gradient-to-r from-green-800 to-green-600 px-5 py-2.5 rounded-lg font-bold transition shadow-md">
-                            🟢 Abrir Loja
-                        </button>
-                        <button onclick="alterarStatus('fechado')"
-                            class=" bg-gradient-to-r from-red-800 to-red-700 text-white px-5 py-2.5 rounded-lg font-bold transition shadow-md">
-                            🔴 Fechar Loja
-                        </button>
+            <!-- ========== CONTEÚDO: PEDIDOS ========== -->
+            <div id="aba-pedidos" class="aba-conteudo">
+                <!-- Controle de Status da Loja -->
+                <div class="bg-white p-5 rounded-xl shadow-lg mb-6 border border-gray-100">
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">Controle da Loja</h2>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <span class="text-gray-600 font-medium">Status:</span>
+                        <strong id="status-atual" class="text-xl font-bold text-gray-400">Carregando...</strong>
+                        <div class="flex gap-3 ml-auto">
+                            <button onclick="alterarStatus('aberto')"
+                                class="text-white bg-gradient-to-r from-green-800 to-green-600 px-5 py-2.5 rounded-lg font-bold transition shadow-md">🟢
+                                Abrir Loja</button>
+                            <button onclick="alterarStatus('fechado')"
+                                class="bg-gradient-to-r from-red-800 to-red-700 text-white px-5 py-2.5 rounded-lg font-bold transition shadow-md">🔴
+                                Fechar Loja</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de Pedidos -->
+                <h2 class="text-xl font-bold mb-4 text-gray-800">📋 Pedidos Recebidos</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pedidos-lista"></div>
+            </div>
+
+            <!-- ========== CONTEÚDO: ANALYTICS ========== -->
+
+            <div id="aba-cardapio" class="aba-conteudo hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Gestão de Produtos -->
+                    <div class="bg-white p-5 rounded-xl shadow">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg">🍔 Produtos & Preços</h3>
+                            <button onclick="abrirModalProduto()"
+                                class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700">+
+                                Novo</button>
+                        </div>
+                        <div id="admin-produtos-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-2"></div>
+                    </div>
+
+                    <!-- Gestão de Descontos -->
+                    <div class="bg-white p-5 rounded-xl shadow">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg">🏷️ Descontos & Promoções</h3>
+                            <button onclick="abrirModalDesconto()"
+                                class="bg-purple-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-purple-700">+
+                                Novo</button>
+                        </div>
+                        <div id="admin-descontos-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-2"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Lista de Pedidos -->
-            <h2 class="text-xl font-bold mb-4 text-gray-800">📋 Pedidos Recebidos</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pedidos-lista">
+            <!-- Modal Produto -->
+            <div id="modal-produto" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-black/60">
+                <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+                    <h3 class="text-xl font-bold mb-4" id="modal-produto-titulo">Adicionar Produto</h3>
+                    <input type="hidden" id="prod-id">
+                    <div class="space-y-3">
+                        <input id="prod-nome" type="text" placeholder="Nome do Produto"
+                            class="w-full border rounded-lg px-3 py-2">
+                        <input id="prod-preco" type="number" step="0.01" placeholder="Preço (R$)"
+                            class="w-full border rounded-lg px-3 py-2">
+                        <select id="prod-categoria" class="w-full border rounded-lg px-3 py-2">
+                            <option value="hamburgueres">🍔 Hamburgueres</option>
+                            <option value="bebidas">🥤 Bebidas</option>
+                            <option value="sobremesas">🍰 Sobremesas</option>
+                            <option value="combos">📦 Combos</option>
+                        </select>
+                        <input id="prod-imagem" type="text" placeholder="URL da Imagem (ex: assets/hamb-1.png)"
+                            class="w-full border rounded-lg px-3 py-2">
+                    </div>
+                    <div class="flex gap-3 mt-5">
+                        <button onclick="fecharModalProduto()"
+                            class="flex-1 py-2 border rounded-lg hover:bg-gray-50">Cancelar</button>
+                        <button onclick="salvarProduto()"
+                            class="flex-1 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Salvar</button>
+                    </div>
+                </div>
             </div>
 
-        </main>
+            <!-- Modal Desconto -->
+            <div id="modal-desconto" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-black/60">
+                <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+                    <h3 class="text-xl font-bold mb-4">Criar Desconto</h3>
+                    <input type="hidden" id="desc-id">
+                    <div class="space-y-3">
+                        <input id="desc-nome" type="text" placeholder="Nome (ex: Black Friday)"
+                            class="w-full border rounded-lg px-3 py-2">
+                        <div class="grid grid-cols-2 gap-3">
+                            <select id="desc-tipo" class="border rounded-lg px-3 py-2">
+                                <option value="percent">% Desconto</option>
+                                <option value="fixed">R$ Fixo</option>
+                            </select>
+                            <input id="desc-valor" type="number" step="0.01" placeholder="Valor"
+                                class="border rounded-lg px-3 py-2">
+                        </div>
+                        <select id="desc-aplicar" class="w-full border rounded-lg px-3 py-2">
+                            <option value="all">🌍 Todos os Produtos</option>
+                            <option value="category:hamburgueres">🍔 Só Hamburgueres</option>
+                            <option value="category:bebidas">🥤 Só Bebidas</option>
+                        </select>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input id="desc-inicio" type="date" class="border rounded-lg px-3 py-2">
+                            <input id="desc-fim" type="date" class="border rounded-lg px-3 py-2">
+                        </div>
+                    </div>
+                    <div class="flex gap-3 mt-5">
+                        <button onclick="fecharModalDesconto()"
+                            class="flex-1 py-2 border rounded-lg hover:bg-gray-50">Cancelar</button>
+                        <button onclick="salvarDesconto()"
+                            class="flex-1 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Salvar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="aba-analytics" class="aba-conteudo hidden">
+
+                <!-- Cards de Métricas Rápidas -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white p-4 rounded-xl shadow border-l-4 border-green-500">
+                        <p class="text-xs text-gray-400 uppercase font-bold">Vendas Hoje</p>
+                        <p class="text-2xl font-black text-green-600" id="metric-vendas-hoje">R$ 0,00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow border-l-4 border-blue-500">
+                        <p class="text-xs text-gray-400 uppercase font-bold">Pedidos Hoje</p>
+                        <p class="text-2xl font-black text-blue-600" id="metric-pedidos-hoje">0</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow border-l-4 border-purple-500">
+                        <p class="text-xs text-gray-400 uppercase font-bold">Ticket Médio</p>
+                        <p class="text-2xl font-black text-purple-600" id="metric-ticket-medio">R$ 0,00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow border-l-4 border-yellow-500">
+                        <p class="text-xs text-gray-400 uppercase font-bold">Em Preparo</p>
+                        <p class="text-2xl font-black text-yellow-600" id="metric-em-preparo">0</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow mb-6 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-bold text-gray-800">📋 Gerar Relatório</h3>
+                        <p class="text-sm text-gray-500">Exporte dados completos para análise ou impressão</p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <select id="relatorio-periodo"
+                            class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="hoje">📅 Hoje</option>
+                            <option value="semana">📆 Esta Semana</option>
+                            <option value="mes" selected>📊 Este Mês</option>
+                            <option value="ano">🗓️ Este Ano</option>
+                            <option value="todos">📚 Todos os Dados</option>
+                        </select>
+                        <button onclick="gerarRelatorio('html')"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-2">
+                            🖨️ PDF
+                        </button>
+                        <button onclick="gerarRelatorio('csv')"
+                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-2">
+                            📥 CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    <!-- Gráfico: Pedidos por Hora -->
+                    <div class="bg-white p-5 rounded-xl shadow">
+                        <h3 class="font-bold text-gray-700 mb-3">🕐 Pedidos por Horário</h3>
+                        <div class="relative h-64 w-full">
+                            <canvas id="chart-horas"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico: Status dos Pedidos -->
+                    <div class="bg-white p-5 rounded-xl shadow">
+                        <h3 class="font-bold text-gray-700 mb-3">📊 Status dos Pedidos</h3>
+                        <div class="relative h-64 w-full">
+                            <canvas id="chart-status"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico: Vendas Mensais -->
+                    <div class="bg-white p-5 rounded-xl shadow lg:col-span-2">
+                        <div class="flex flex-wrap justify-between items-center mb-3 gap-3">
+                            <h3 class="font-bold text-gray-700">💰 Vendas por Mês (Ano Atual)</h3>
+                            <select id="filtro-ano-mensal"
+                                class="text-sm border rounded-lg px-3 py-1.5 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                onchange="renderChartVendasMensais()">
+                                <!-- Preenchido via JS -->
+                            </select>
+                        </div>
+                        <div class="relative h-72 w-full">
+                            <canvas id="chart-vendas-mensais"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico: Vendas Anuais -->
+                    <div class="bg-white p-5 rounded-xl shadow lg:col-span-2">
+                        <h3 class="font-bold text-gray-700 mb-3">📅 Vendas por Ano</h3>
+                        <div class="relative h-72 w-full">
+                            <canvas id="chart-vendas-anuais"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico: Top Produtos -->
+                    <div class="bg-white p-5 rounded-xl shadow lg:col-span-2">
+                        <h3 class="font-bold text-gray-700 mb-3">🏆 Top 5 Produtos Mais Vendidos</h3>
+                        <div class="relative h-72 w-full">
+                            <canvas id="chart-produtos"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Botão de Atualizar -->
+                <div class="mt-6 text-center">
+                    <button onclick="refreshCharts()"
+                        class="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium transition flex items-center gap-2 mx-auto">
+                        🔄 Atualizar Dados
+                    </button>
+                    <p class="text-xs text-gray-400 mt-2">Os dados são atualizados automaticamente a cada novo pedido
+                    </p>
+                </div>
+            </div>
+
+    </div>
+    </section>
+
+    </main>
     </div>
 
     <div id="order-complete-modal"
-        class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
         <div
             class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 border-2 border-gray-100 animate-bounce-in">
 
@@ -183,6 +426,7 @@
     </div>
 
     <script src="admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
 </body>
 
 </html>
