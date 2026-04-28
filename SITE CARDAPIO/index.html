@@ -138,10 +138,11 @@
     </header>
 
     <div class="mx-auto max-w-7xl px-2 my-4 mt-9 mb-6">
-    <h2 class="text-2xl md:text-3xl border-gray-800 border-2 rounded-2xl bg-gradient-to-r from-yellow-500 to-yellow-300 font-extrabold text-center text-white [-webkit-text-stroke:2px_#4a148c] [text-shadow:2px_2px_0_#ff9800,-1px_-1px_0_#ff9800,1px_-1px_0_#ff9800,-1px_1px_0_#ff9800,1px_1px_0_#ff9800]">
-        Conheça nosso menu
-    </h2>
-</div>
+        <h2
+            class="text-2xl md:text-3xl border-gray-800 border-2 rounded-2xl bg-gradient-to-r from-yellow-500 to-yellow-300 font-extrabold text-center text-white [-webkit-text-stroke:2px_#4a148c] [text-shadow:2px_2px_0_#ff9800,-1px_-1px_0_#ff9800,1px_-1px_0_#ff9800,-1px_1px_0_#ff9800,1px_1px_0_#ff9800]">
+            Conheça nosso menu
+        </h2>
+    </div>
 
     <!-- Navegação com links dinâmicos -->
     <nav
@@ -175,53 +176,54 @@
     <div id="menu-container" class="menu"></div>
 
     <!-- Modal do Carrinho -->
-<div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] hidden items-center justify-center" id="cart-modal">
-    
-    <!-- ✅ ABRE a div do conteúdo (SEM fechar aqui) -->
-    <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px] max-h-[90vh] overflow-y-auto">
-        
-        <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
+    <div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] hidden items-center justify-center" id="cart-modal">
 
-        <div id="cart-items" class="mb-2 max-h-80 overflow-y-scroll"></div>
+        <!-- ABRE a div do conteúdo -->
+        <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px] max-h-[90vh] overflow-y-auto">
 
-        <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
+            <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
 
-        <p class="font-bold mt-4">Seu Nome</p>
-        <input type="text" placeholder="Digite seu nome..." id="client-name"
-            class="w-full border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
-        <p class="text-red-500 hidden" id="name-warn">Por favor, digite seu nome</p>
+            <div id="cart-items" class="mb-2 max-h-80 overflow-y-scroll"></div>
 
-        <p class="font-bold mt-4">Seu Número</p>
-        <input type="number" placeholder="Digite seu número..." id="client-number"
-            class="w-full border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
-        <p class="text-red-500 hidden" id="number-warn">Por favor, digite seu número</p>
+            <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
 
-        <p class="font-bold mt-4">Endereço de Entrega</p>
-        <input type="text" placeholder="Digite seu endereço completo..." id="address"
-            class="w-full border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
-        <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo</p>
+            <p class="font-bold mt-4">Seu Nome</p>
+            <input type="text" placeholder="Digite seu nome..." id="client-name"
+                class="w-full border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
+            <p class="text-red-500 hidden" id="name-warn">Por favor, digite seu nome</p>
 
-        <p class="font-bold mt-4">Pagamento</p>
-        <select id="payment-method" class="w-full border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
-            <option value="Pix">Pix</option>
-            <option value="Dinheiro">Dinheiro</option>
-            <option value="Cartão de Crédito">Cartão de Crédito</option>
-            <option value="Cartão de Débito">Cartão de Débito</option>
-        </select>
+            <p class="font-bold mt-4">Seu Número</p>
+            <input type="number" placeholder="Digite seu número..." id="client-number"
+                class="w-full border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
+            <p class="text-red-500 hidden" id="number-warn">Por favor, digite seu número</p>
 
-        <div class="flex items-center justify-between mt-5 w-full">
-            <button id="close-modal-btn" class="text-red-800 font-bold hover:scale-110 duration-100">Fechar</button>
-            <button id="checkout-btn"
-                class="bg-green-600 text-white px-4 py-1 rounded hover:scale-110 duration-100 shadow-lg shadow-green-500/50">
-                Finalizar Pedido
-            </button>
+            <p class="font-bold mt-4">Endereço de Entrega</p>
+            <input type="text" placeholder="Digite seu endereço completo..." id="address"
+                class="w-full border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
+            <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo</p>
+
+            <p class="font-bold mt-4">Pagamento</p>
+            <select id="payment-method"
+                class="w-full border-2 p-1 rounded my-1 focus:outline-none focus:border-green-600">
+                <option value="Pix">Pix</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
+            </select>
+
+            <div class="flex items-center justify-between mt-5 w-full">
+                <button id="close-modal-btn" class="text-red-800 font-bold hover:scale-110 duration-100">Fechar</button>
+                <button id="checkout-btn"
+                    class="bg-green-600 text-white px-4 py-1 rounded hover:scale-110 duration-100 shadow-lg shadow-green-500/50">
+                    Finalizar Pedido
+                </button>
+            </div>
+
         </div>
-        
-    </div>
-    
-</div>
 
-    <!-- ✅ MODAL DE ADICIONAIS (Potes/Copos) -->
+    </div>
+
+    <!-- MODAL DE ADICIONAIS (Potes/Copos) -->
     <div id="adicionais-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h3 class="text-xl font-bold mb-2">🫙 Escolha seus adicionais</h3>
@@ -249,7 +251,7 @@
         </div>
     </div>
 
-    <!-- ✅ MODAL DE TAMANHOS (Milkshakes) -->
+    <!-- MODAL DE TAMANHOS (Milkshakes) -->
     <div id="tamanho-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h3 class="text-xl font-bold mb-2">🥤 Escolha o tamanho</h3>
@@ -292,7 +294,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="script.js"></script>
 
-    <!-- Função de rolagem suave para categorias -->
     <script>
         function scrollToCategory(categoria) {
             const section = document.getElementById(`${categoria}-section`);

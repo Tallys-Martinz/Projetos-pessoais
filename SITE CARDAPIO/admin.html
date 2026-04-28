@@ -236,7 +236,7 @@
                 </div>
             </div>
 
-            <!-- ========== MODAL PRODUTO (ATUALIZADO COM ADICIONAIS/TAMANHOS) ========== -->
+            <!-- ========== MODAL PRODUTO ========== -->
             <div id="modal-produto" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-black/60">
                 <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
                     <h3 class="text-xl font-bold mb-4" id="modal-produto-titulo">Adicionar Produto</h3>
@@ -264,7 +264,7 @@
                         <input id="prod-imagem" type="text" placeholder="URL da Imagem (ex: assets/hamb-1.png)"
                             class="w-full border rounded-lg px-3 py-2">
 
-                        <!-- ✅ SEÇÃO: ADICIONAIS (para Potes/Copos) -->
+                        <!--  SEÇÃO: ADICIONAIS -->
                         <div id="config-adicionais" class="config-section hidden">
                             <h4>🍓 Adicionais (Potes/Copos)</h4>
                             <p class="text-xs">Itens que o cliente pode escolher como complemento</p>
@@ -277,7 +277,7 @@
                             </div>
                         </div>
 
-                        <!-- ✅ SEÇÃO: TAMANHOS (para Milkshakes) -->
+                        <!-- SEÇÃO: TAMANHOS (para Milkshakes) -->
                         <div id="config-tamanhos" class="config-section hidden">
                             <h4>🥤 Tamanhos (Milkshakes)</h4>
                             <p class="text-xs">Tamanhos disponíveis e acréscimo de preço para cada</p>
@@ -332,7 +332,7 @@
                 </div>
             </div>
 
-            <!-- ========== CONTEÚDO: ANALYTICS (100% ORIGINAL PRESERVADO) ========== -->
+            <!-- Gráficos -->
             <div id="aba-analytics" class="aba-conteudo hidden">
 
                 <!-- Cards de Métricas Rápidas -->
@@ -577,9 +577,8 @@
     <script src="graficos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
     
-    <!-- ===== SCRIPTS PARA CAMPOS DINÂMICOS DE ADICIONAIS/TAMANHOS ===== -->
     <script>
-        // Função para adicionar campo de adicional
+    
         function addAdicionalField(nome = '', preco = '') {
             const container = document.getElementById('adicionais-container');
             if (!container) return;
@@ -594,7 +593,6 @@
             container.appendChild(div);
         }
 
-        // Função para adicionar campo de tamanho
         function addTamanhoField(ml = '', label = '', acrescimo = '') {
             const container = document.getElementById('tamanhos-container');
             if (!container) return;
@@ -610,7 +608,6 @@
             container.appendChild(div);
         }
 
-        // Mostrar/ocultar seções conforme categoria selecionada
         document.getElementById('prod-categoria')?.addEventListener('change', function() {
             const cat = this.value;
             const secAdicionais = document.getElementById('config-adicionais');
@@ -628,7 +625,6 @@
             }
         });
 
-        // Exportar funções para o admin.js
         window.addAdicionalField = addAdicionalField;
         window.addTamanhoField = addTamanhoField;
     </script>

@@ -156,7 +156,7 @@ function atualizarInterfaceAdmin(status) {
     el.className = `text-xl font-bold ${status === "aberto" ? "text-green-600" : "text-red-600"}`;
 }
 
-// ===== FUNÇÃO AUXILIAR: Encontrar pedido sem usar ID =====
+// ===== FUNÇÃO AUXILIAR =====
 function encontrarPedidoPorDados(pedidos, pedidoRef) {
     return pedidos.findIndex(p =>
         p.cliente === pedidoRef.cliente &&
@@ -551,7 +551,7 @@ function _preencherCamposTamanhos(tamanhos) {
 function _coletarCamposAdicionais() {
     const container = document.getElementById('adicionais-container');
     if (!container) return null;
-    
+
     const opcoes = [];
     container.querySelectorAll('.adicional-row').forEach(row => {
         const nome = row.querySelector('.adicional-nome')?.value.trim();
@@ -560,9 +560,9 @@ function _coletarCamposAdicionais() {
             opcoes.push({ nome, preco });
         }
     });
-    
+
     if (opcoes.length === 0) return null;
-    
+
     const obrigatorios = parseInt(document.getElementById('adicionais-obrigatorios')?.value) || 5;
     return { obrigatorios, opcoes };
 }
@@ -570,7 +570,7 @@ function _coletarCamposAdicionais() {
 function _coletarCamposTamanhos() {
     const container = document.getElementById('tamanhos-container');
     if (!container) return null;
-    
+
     const lista = [];
     container.querySelectorAll('.tamanho-row').forEach(row => {
         const ml = parseInt(row.querySelector('.tamanho-ml')?.value);
@@ -580,23 +580,22 @@ function _coletarCamposTamanhos() {
             lista.push({ ml, label, acrescimo });
         }
     });
-    
+
     return lista.length > 0 ? lista : null;
 }
 
-// ===== MODAL PRODUTO (ATUALIZADO COM ADICIONAIS/TAMANHOS) =====
+// ===== MODAL PRODUTO (COM ADICIONAIS/TAMANHOS) =====
 function abrirModalProduto(id = null) {
     document.getElementById('modal-produto')?.classList.remove('hidden');
     document.getElementById('modal-produto')?.classList.add('flex');
-    
-    // Limpar campos dinâmicos antes de abrir
+
     _limparCamposAdicionais();
     _limparCamposTamanhos();
-    
+
     if (id) {
         const p = getProdutos().find(x => x.id === id);
         if (!p) return;
-        
+
         document.getElementById('modal-produto-titulo').textContent = 'Editar Produto';
         document.getElementById('prod-id').value = p.id;
         document.getElementById('prod-nome').value = p.nome;
@@ -604,17 +603,14 @@ function abrirModalProduto(id = null) {
         document.getElementById('prod-categoria').value = p.categoria;
         document.getElementById('prod-imagem').value = p.imagem || '';
         document.getElementById('prod-descricao').value = p.descricao || '';
-        
-        // ✅ Preencher adicionais se existir
+
         if (p.adicionais) {
             _preencherCamposAdicionais(p.adicionais);
         }
-        // ✅ Preencher tamanhos se existir
         if (p.tamanhos) {
             _preencherCamposTamanhos(p.tamanhos);
         }
-        
-        // Trigger change para mostrar seção correta
+
         document.getElementById('prod-categoria')?.dispatchEvent(new Event('change'));
     } else {
         document.getElementById('modal-produto-titulo').textContent = 'Novo Produto';
@@ -626,15 +622,14 @@ function abrirModalProduto(id = null) {
         document.getElementById('prod-descricao').value = '';
         const obrigInput = document.getElementById('adicionais-obrigatorios');
         if (obrigInput) obrigInput.value = '5';
-        
-        // Trigger change para mostrar seção correta
+
         document.getElementById('prod-categoria')?.dispatchEvent(new Event('change'));
     }
 }
 
-function fecharModalProduto() { 
-    document.getElementById('modal-produto')?.classList.add('hidden'); 
-    document.getElementById('modal-produto')?.classList.remove('flex'); 
+function fecharModalProduto() {
+    document.getElementById('modal-produto')?.classList.add('hidden');
+    document.getElementById('modal-produto')?.classList.remove('flex');
 }
 
 function abrirModalDesconto() {
@@ -646,12 +641,12 @@ function abrirModalDesconto() {
     document.getElementById('desc-inicio').value = new Date().toISOString().split('T')[0];
     document.getElementById('desc-fim').value = '';
 }
-function fecharModalDesconto() { 
-    document.getElementById('modal-desconto')?.classList.add('hidden'); 
-    document.getElementById('modal-desconto')?.classList.remove('flex'); 
+function fecharModalDesconto() {
+    document.getElementById('modal-desconto')?.classList.add('hidden');
+    document.getElementById('modal-desconto')?.classList.remove('flex');
 }
 
-// ===== SALVAR PRODUTO (ATUALIZADO COM ADICIONAIS/TAMANHOS) =====
+// ===== SALVAR PRODUTO =====
 function salvarProduto() {
     const id = document.getElementById('prod-id')?.value;
     const nome = document.getElementById('prod-nome')?.value.trim();
@@ -662,13 +657,13 @@ function salvarProduto() {
 
     if (!nome || isNaN(price)) return alert('Preencha nome e preço!');
 
-    // ✅ Coletar adicionais (se categoria for potes/copos)
+    // Coletar adicionais (se categoria for potes/copos)
     let adicionais = null;
     if (categoria === 'potes' || categoria === 'copos') {
         adicionais = _coletarCamposAdicionais();
     }
 
-    // ✅ Coletar tamanhos (se categoria for milkshakes)
+    // Coletar tamanhos (se categoria for milkshakes)
     let tamanhos = null;
     if (categoria === 'milkshakes' || categoria === 'milkshakesespecial') {
         tamanhos = _coletarCamposTamanhos();
@@ -686,8 +681,8 @@ function salvarProduto() {
                 categoria,
                 imagem,
                 descricao,
-                adicionais,    // ✅ NOVO
-                tamanhos       // ✅ NOVO
+                adicionais,
+                tamanhos
             };
         }
     } else {
@@ -699,8 +694,8 @@ function salvarProduto() {
             imagem,
             descricao,
             active: true,
-            adicionais,    // ✅ NOVO
-            tamanhos       // ✅ NOVO
+            adicionais,
+            tamanhos
         });
     }
 
@@ -761,7 +756,6 @@ window.fecharModalFinalizado = fecharModalFinalizado;
 window.confirmarRemocaoPedido = confirmarRemocaoPedido;
 window.mudarAba = mudarAba;
 
-// ===== WRAPPERS PARA ATUALIZAÇÃO AUTOMÁTICA =====
 const _carregarPedidosOriginal = window.carregarPedidos;
 window.carregarPedidos = function () {
     if (typeof _carregarPedidosOriginal === 'function') {

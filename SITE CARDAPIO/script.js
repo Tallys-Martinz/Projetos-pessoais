@@ -241,12 +241,12 @@ function renderizarMenu() {
 function openAdicionaisModal(produto) {
     produtoAtual = produto;
     adicionaisSelecionados = [];
-    
+
     const config = CONFIG_ADICIONAIS[produto.categoria] || CONFIG_ADICIONAIS.potes;
     const opcoes = produto.adicionais?.opcoes || config.opcoes;
     const minimo = produto.adicionais?.minimo ?? config.minimo ?? 1;
     const maximo = produto.adicionais?.maximo ?? config.maximo ?? 5;
-    
+
     adicionaisList.innerHTML = opcoes.map((adicional, index) => `
         <label class="adicional-item" data-index="${index}">
             <input type="checkbox" class="checkbox-adicional w-4 h-4" value="${index}">
@@ -256,11 +256,11 @@ function openAdicionaisModal(produto) {
             </div>
         </label>
     `).join('');
-    
+
     updateAdicionaisCounter(0, minimo, maximo);
     if (adicionaisError) adicionaisError.classList.add('hidden');
     if (adicionaisConfirm) adicionaisConfirm.disabled = true;
-    
+
     document.querySelectorAll('#adicionais-list .checkbox-adicional').forEach(checkbox => {
         checkbox.addEventListener('change', (e) => {
             const item = e.target.closest('.adicional-item');
@@ -268,7 +268,7 @@ function openAdicionaisModal(produto) {
             updateAdicionaisSelection();
         });
     });
-    
+
     document.querySelectorAll('#adicionais-list .adicional-item').forEach(item => {
         item.addEventListener('click', (e) => {
             if (e.target.classList.contains('checkbox-adicional')) return;
@@ -277,7 +277,7 @@ function openAdicionaisModal(produto) {
             checkbox.dispatchEvent(new Event('change'));
         });
     });
-    
+
     if (adicionaisModal) {
         adicionaisModal.classList.remove('hidden');
     }
@@ -286,7 +286,7 @@ function openAdicionaisModal(produto) {
 
 function updateAdicionaisSelection() {
     if (!produtoAtual) return;
-    
+
     const checkboxes = document.querySelectorAll('#adicionais-list .checkbox-adicional');
     adicionaisSelecionados = Array.from(checkboxes)
         .filter(cb => cb.checked)
@@ -295,13 +295,13 @@ function updateAdicionaisSelection() {
             const opcoes = produtoAtual.adicionais?.opcoes || config.opcoes;
             return opcoes[cb.value];
         });
-    
+
     const config = CONFIG_ADICIONAIS[produtoAtual.categoria] || CONFIG_ADICIONAIS.potes;
     const minimo = produtoAtual.adicionais?.minimo ?? config.minimo ?? 1;
     const maximo = produtoAtual.adicionais?.maximo ?? config.maximo ?? 5;
-    
+
     updateAdicionaisCounter(adicionaisSelecionados.length, minimo, maximo);
-    
+
     if (adicionaisSelecionados.length >= minimo && adicionaisSelecionados.length <= maximo) {
         if (adicionaisConfirm) adicionaisConfirm.disabled = false;
         if (adicionaisError) adicionaisError.classList.add('hidden');
@@ -321,7 +321,7 @@ function updateAdicionaisSelection() {
 function updateAdicionaisCounter(selecionados, minimo, maximo) {
     if (!adicionaisCounter) return;
     adicionaisCounter.textContent = `${selecionados} selecionados (mín. ${minimo}, máx. ${maximo})`;
-    
+
     if (selecionados >= minimo && selecionados <= maximo) {
         adicionaisCounter.className = 'selection-counter valid';
     } else {
@@ -333,13 +333,13 @@ function updateAdicionaisCounter(selecionados, minimo, maximo) {
 function openTamanhoModal(produto) {
     produtoAtual = produto;
     tamanhoSelecionado = null;
-    
+
     const config = CONFIG_TAMANHOS[produto.categoria] || CONFIG_TAMANHOS.milkshakes;
     const tamanhos = produto.tamanhos || config;
-    
+
     if (tamanhoPrecoBase) tamanhoPrecoBase.textContent = `R$ ${produto.price.toFixed(2)}`;
     if (tamanhoPrecoTotal) tamanhoPrecoTotal.textContent = `R$ ${produto.price.toFixed(2)}`;
-    
+
     tamanhosList.innerHTML = tamanhos.map((tamanho, index) => `
         <label class="tamanho-option" data-index="${index}">
             <input type="radio" name="tamanho-milkshake" value="${index}" class="radio-tamanho w-4 h-4">
@@ -351,9 +351,9 @@ function openTamanhoModal(produto) {
             </div>
         </label>
     `).join('');
-    
+
     if (tamanhoConfirm) tamanhoConfirm.disabled = true;
-    
+
     document.querySelectorAll('#tamanhos-list .radio-tamanho').forEach(radio => {
         radio.addEventListener('change', (e) => {
             document.querySelectorAll('#tamanhos-list .tamanho-option').forEach(opt => {
@@ -364,7 +364,7 @@ function openTamanhoModal(produto) {
             updateTamanhoSelection();
         });
     });
-    
+
     document.querySelectorAll('#tamanhos-list .tamanho-option').forEach(item => {
         item.addEventListener('click', (e) => {
             if (e.target.classList.contains('radio-tamanho')) return;
@@ -373,7 +373,7 @@ function openTamanhoModal(produto) {
             radio.dispatchEvent(new Event('change'));
         });
     });
-    
+
     if (tamanhoModal) {
         tamanhoModal.classList.remove('hidden');
     }
@@ -386,11 +386,11 @@ function updateTamanhoSelection() {
         if (tamanhoConfirm) tamanhoConfirm.disabled = true;
         return;
     }
-    
+
     const config = CONFIG_TAMANHOS[produtoAtual.categoria] || CONFIG_TAMANHOS.milkshakes;
     const tamanhos = produtoAtual.tamanhos || config;
     tamanhoSelecionado = tamanhos[selected.value];
-    
+
     const total = produtoAtual.price + (tamanhoSelecionado.acrescimo || 0);
     if (tamanhoPrecoTotal) {
         tamanhoPrecoTotal.textContent = `R$ ${total.toFixed(2)}`;
@@ -406,12 +406,12 @@ function closeAdicionaisModal() {
         adicionaisModal.classList.add('hidden');
     }
     document.body.style.overflow = '';
-    
+
     document.querySelectorAll('#adicionais-list .checkbox-adicional').forEach(cb => {
         cb.checked = false;
         cb.closest('.adicional-item')?.classList.remove('selected');
     });
-    
+
     produtoAtual = null;
     adicionaisSelecionados = [];
     console.log('✅ Modal de adicionais fechado');
@@ -422,12 +422,12 @@ function closeTamanhoModal() {
         tamanhoModal.classList.add('hidden');
     }
     document.body.style.overflow = '';
-    
+
     document.querySelectorAll('#tamanhos-list .radio-tamanho').forEach(radio => {
         radio.checked = false;
         radio.closest('.tamanho-option')?.classList.remove('selected');
     });
-    
+
     produtoAtual = null;
     tamanhoSelecionado = null;
     console.log('✅ Modal de tamanhos fechado');
@@ -454,23 +454,23 @@ if (closeModalBtn) {
     });
 }
 
-// Event listeners para os novos modais (CORRIGIDO)
+// Event listeners para os novos modais 
 if (adicionaisCancel) {
     adicionaisCancel.addEventListener('click', closeAdicionaisModal);
 }
 if (adicionaisConfirm) {
     adicionaisConfirm.addEventListener('click', () => {
         if (!produtoAtual) return;
-        
+
         const config = CONFIG_ADICIONAIS[produtoAtual.categoria] || CONFIG_ADICIONAIS.potes;
         const minimo = produtoAtual.adicionais?.minimo ?? config.minimo ?? 1;
         const maximo = produtoAtual.adicionais?.maximo ?? config.maximo ?? 5;
-        
+
         if (adicionaisSelecionados.length >= minimo && adicionaisSelecionados.length <= maximo) {
             const adicionaisNomes = adicionaisSelecionados.map(a => a.nome).join(', ');
             const adicionalPrice = adicionaisSelecionados.reduce((sum, a) => sum + a.preco, 0);
             const finalPrice = produtoAtual.price + adicionalPrice;
-            
+
             addToCart(`${produtoAtual.nome} + [${adicionaisNomes}]`, finalPrice);
             closeAdicionaisModal();
         } else {
@@ -515,7 +515,7 @@ if (menuContainer) {
             const name = btn.getAttribute("data-name");
             const price = parseFloat(btn.getAttribute("data-price"));
             const categoria = btn.getAttribute("data-categoria");
-            
+
             if (name && !isNaN(price)) {
                 // Potes/Copos → modal de adicionais
                 if (categoria === 'potes' || categoria === 'copos') {
@@ -527,7 +527,7 @@ if (menuContainer) {
                     };
                     openAdicionaisModal(produto);
                 }
-                // ✅ Milkshakes NORMAIS → modal de tamanhos
+                //  Milkshakes NORMAIS → modal de tamanhos
                 else if (categoria === 'milkshakes') {
                     const produto = {
                         nome: name,
@@ -537,11 +537,11 @@ if (menuContainer) {
                     };
                     openTamanhoModal(produto);
                 }
-                
+
                 else if (categoria === 'milkshakesespecial') {
                     addToCart(name, price);
                 }
-                
+
                 else {
                     addToCart(name, price);
                 }
