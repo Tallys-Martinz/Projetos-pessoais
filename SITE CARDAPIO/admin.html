@@ -10,49 +10,99 @@
 
 <style>
     @keyframes bounce-in {
-        0% {
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-        }
-
-        50% {
-            transform: scale(1.02) translateY(-5px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
+        0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+        50% { transform: scale(1.02) translateY(-5px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
     }
-
-    .animate-bounce-in {
-        animation: bounce-in 0.4s ease-out;
-    }
-
-    .aba-conteudo {
-        transition: opacity 0.2s ease;
-    }
-
-    .aba-conteudo.hidden {
-        display: none;
-        opacity: 0;
-    }
-
-    /* Animação suave ao trocar de aba */
+    .animate-bounce-in { animation: bounce-in 0.4s ease-out; }
+    .aba-conteudo { transition: opacity 0.2s ease; }
+    .aba-conteudo.hidden { display: none; opacity: 0; }
     @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
+    .aba-conteudo:not(.hidden) { animation: fadeIn 0.3s ease-out; }
 
-    .aba-conteudo:not(.hidden) {
-        animation: fadeIn 0.3s ease-out;
+    /* ===== ESTILOS PARA CAMPOS DE ADICIONAIS/TAMANHOS ===== */
+    .config-section {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 1rem 0;
+        background: #f9fafb;
+    }
+    .config-section h4 {
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .config-section > p.text-xs {
+        margin-bottom: 0.75rem;
+        color: #6b7280;
+    }
+    .adicional-row, .tamanho-row {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .adicional-row input, .tamanho-row input {
+        padding: 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+    }
+    .adicional-row input.adicional-nome { flex: 2; min-width: 120px; }
+    .adicional-row input.adicional-preco { flex: 1; min-width: 80px; }
+    .tamanho-row input.tamanho-ml { width: 70px; }
+    .tamanho-row input.tamanho-label { flex: 1; min-width: 80px; }
+    .tamanho-row input.tamanho-acrescimo { width: 90px; }
+    .btn-remove {
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: background 0.2s;
+    }
+    .btn-remove:hover { background: #dc2626; }
+    .btn-add {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        transition: background 0.2s;
+    }
+    .btn-add:hover { background: #2563eb; }
+    .config-footer {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid #e5e7eb;
+    }
+    .config-footer label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+    }
+    .config-footer input {
+        width: 60px;
+        padding: 0.375rem 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        text-align: center;
     }
 </style>
 
@@ -125,10 +175,10 @@
                 class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all bg-blue-600 text-white shadow">📋
                 Pedidos</button>
             <button onclick="mudarAba('cardapio')" id="tab-cardapio"
-                class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all text-gray-600 hover:bg-gray-100">📦
+                class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all text-white hover:bg-gray-100">📦
                 Cardápio</button>
             <button onclick="mudarAba('analytics')" id="tab-analytics"
-                class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all text-gray-600 hover:bg-gray-100">📈
+                class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all text-white hover:bg-gray-100">📈
                 Analytics</button>
         </nav>
 
@@ -159,14 +209,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pedidos-lista"></div>
             </div>
 
-            <!-- ========== CONTEÚDO: ANALYTICS ========== -->
-
+            <!-- ========== CONTEÚDO: CARDÁPIO ========== -->
             <div id="aba-cardapio" class="aba-conteudo hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Gestão de Produtos -->
                     <div class="bg-white p-5 rounded-xl shadow">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-lg">🍔 Produtos & Preços</h3>
+                            <h3 class="font-bold text-lg">🛍️ Produtos & Preços</h3>
                             <button onclick="abrirModalProduto()"
                                 class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700">+
                                 Novo</button>
@@ -187,9 +236,9 @@
                 </div>
             </div>
 
-            <!-- Modal Produto -->
+            <!-- ========== MODAL PRODUTO (ATUALIZADO COM ADICIONAIS/TAMANHOS) ========== -->
             <div id="modal-produto" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-black/60">
-                <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+                <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
                     <h3 class="text-xl font-bold mb-4" id="modal-produto-titulo">Adicionar Produto</h3>
                     <input type="hidden" id="prod-id">
                     <div class="space-y-3">
@@ -198,13 +247,43 @@
                         <input id="prod-preco" type="number" step="0.01" placeholder="Preço (R$)"
                             class="w-full border rounded-lg px-3 py-2">
                         <select id="prod-categoria" class="w-full border rounded-lg px-3 py-2">
-                            <option value="hamburgueres">🍔 Hamburgueres</option>
-                            <option value="bebidas">🥤 Bebidas</option>
-                            <option value="sobremesas">🍰 Sobremesas</option>
-                            <option value="combos">📦 Combos</option>
+                            <option value="potes">🫙 Potes</option>
+                            <option value="copos">🧉 Copos</option>
+                            <option value="milkshakes">🥤 Milkshakes</option>
+                            <option value="milkshakesespecial">🥤 Milkshakes Especial</option>
+                            <option value="picoles">🍦 Picolés</option>
                         </select>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                            <textarea id="prod-descricao"
+                                placeholder="Ex: Pão artesanal, 180g de carne angus, queijo cheddar, bacon crocante..."
+                                class="w-full border rounded-lg px-3 py-2 resize-none focus:outline-none focus:border-green-600 transition"
+                                rows="3" maxlength="200"></textarea>
+                            <p class="text-xs text-gray-400 mt-1">Máx. 200 caracteres</p>
+                        </div>
                         <input id="prod-imagem" type="text" placeholder="URL da Imagem (ex: assets/hamb-1.png)"
                             class="w-full border rounded-lg px-3 py-2">
+
+                        <!-- ✅ SEÇÃO: ADICIONAIS (para Potes/Copos) -->
+                        <div id="config-adicionais" class="config-section hidden">
+                            <h4>🍓 Adicionais (Potes/Copos)</h4>
+                            <p class="text-xs">Itens que o cliente pode escolher como complemento</p>
+                            <div id="adicionais-container" class="space-y-1"></div>
+                            <button type="button" onclick="addAdicionalField()" class="btn-add">+ Adicionar opcional</button>
+                            <div class="config-footer">
+                                <label for="adicionais-obrigatorios">Qtd. obrigatória:</label>
+                                <input type="number" id="adicionais-obrigatorios" value="5" min="1" max="10">
+                                <span class="text-xs text-gray-500">itens</span>
+                            </div>
+                        </div>
+
+                        <!-- ✅ SEÇÃO: TAMANHOS (para Milkshakes) -->
+                        <div id="config-tamanhos" class="config-section hidden">
+                            <h4>🥤 Tamanhos (Milkshakes)</h4>
+                            <p class="text-xs">Tamanhos disponíveis e acréscimo de preço para cada</p>
+                            <div id="tamanhos-container" class="space-y-1"></div>
+                            <button type="button" onclick="addTamanhoField()" class="btn-add">+ Adicionar tamanho</button>
+                        </div>
                     </div>
                     <div class="flex gap-3 mt-5">
                         <button onclick="fecharModalProduto()"
@@ -233,8 +312,11 @@
                         </div>
                         <select id="desc-aplicar" class="w-full border rounded-lg px-3 py-2">
                             <option value="all">🌍 Todos os Produtos</option>
-                            <option value="category:hamburgueres">🍔 Só Hamburgueres</option>
-                            <option value="category:bebidas">🥤 Só Bebidas</option>
+                            <option value="category:potes">🫙 Só Potes</option>
+                            <option value="category:copos">🧉 Só Copos</option>
+                            <option value="category:milkshakes">🥤 Só Milkshakes</option>
+                            <option value="category:milkshakesespecial">🥤 Só Milkshakes Especial</option>
+                            <option value="category:picoles">🍦 Só Picolés</option>
                         </select>
                         <div class="grid grid-cols-2 gap-3">
                             <input id="desc-inicio" type="date" class="border rounded-lg px-3 py-2">
@@ -250,6 +332,7 @@
                 </div>
             </div>
 
+            <!-- ========== CONTEÚDO: ANALYTICS (100% ORIGINAL PRESERVADO) ========== -->
             <div id="aba-analytics" class="aba-conteudo hidden">
 
                 <!-- Cards de Métricas Rápidas -->
@@ -300,6 +383,74 @@
                 <!-- Gráficos -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
+                    <!-- ========== GRÁFICO: QUANTIDADE DE VENDAS ========== -->
+                    <div class="bg-white p-5 rounded-xl shadow lg:col-span-2">
+                        <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+                            <h3 class="font-bold text-gray-700">📦 Quantidade de Produtos Vendidos</h3>
+
+                            <!-- Filtros de Período -->
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="renderQuantidadeVendas('diario')"
+                                    class="px-3 py-1.5 text-xs font-medium rounded-lg transition border border-gray-200 hover:bg-gray-100"
+                                    id="btn-qty-diario">📅 Diário</button>
+                                <button onclick="renderQuantidadeVendas('semanal')"
+                                    class="px-3 py-1.5 text-xs font-medium rounded-lg transition border border-gray-200 hover:bg-gray-100"
+                                    id="btn-qty-semanal">📆 Semanal</button>
+                                <button onclick="renderQuantidadeVendas('mensal')"
+                                    class="px-3 py-1.5 text-xs font-medium rounded-lg transition bg-purple-600 text-white border border-purple-600"
+                                    id="btn-qty-mensal">📊 Mensal</button>
+                                <button onclick="renderQuantidadeVendas('anual')"
+                                    class="px-3 py-1.5 text-xs font-medium rounded-lg transition border border-gray-200 hover:bg-gray-100"
+                                    id="btn-qty-anual">🗓️ Anual</button>
+                            </div>
+                        </div>
+
+                        <!-- Cards de Resumo Rápido -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                            <div class="bg-purple-50 p-3 rounded-lg text-center">
+                                <p class="text-xs text-purple-600 font-bold">Total</p>
+                                <p class="text-xl font-black text-purple-700" id="qty-total-unidades">0</p>
+                                <p class="text-xs text-gray-400">unidades</p>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded-lg text-center">
+                                <p class="text-xs text-green-600 font-bold">Top Produto</p>
+                                <p class="text-sm font-black text-green-700 truncate" id="qty-top-produto">-</p>
+                                <p class="text-xs text-gray-400" id="qty-top-qtd">0 un.</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg text-center">
+                                <p class="text-xs text-blue-600 font-bold">Média/Dia</p>
+                                <p class="text-xl font-black text-blue-700" id="qty-media-dia">0</p>
+                                <p class="text-xs text-gray-400">unidades</p>
+                            </div>
+                            <div class="bg-orange-50 p-3 rounded-lg text-center">
+                                <p class="text-xs text-orange-600 font-bold">Pedidos</p>
+                                <p class="text-xl font-black text-orange-700" id="qty-total-pedidos">0</p>
+                                <p class="text-xs text-gray-400">no período</p>
+                            </div>
+                        </div>
+
+                        <!-- Canvas do Gráfico -->
+                        <div class="relative h-72 w-full">
+                            <canvas id="chart-quantidade"></canvas>
+                        </div>
+
+                        <!-- Tabela Resumida -->
+                        <div class="mt-4 overflow-x-auto">
+                            <table class="w-full text-xs">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left font-semibold text-gray-600">Produto</th>
+                                        <th class="px-3 py-2 text-center font-semibold text-gray-600">Qtd</th>
+                                        <th class="px-3 py-2 text-right font-semibold text-gray-600">%</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-quantidade-produtos">
+                                    <!-- Preenchido via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <!-- Gráfico: Pedidos por Hora -->
                     <div class="bg-white p-5 rounded-xl shadow">
                         <h3 class="font-bold text-gray-700 mb-3">🕐 Pedidos por Horário</h3>
@@ -346,7 +497,6 @@
                             <canvas id="chart-produtos"></canvas>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Botão de Atualizar -->
@@ -360,12 +510,10 @@
                 </div>
             </div>
 
-    </div>
-    </section>
-
-    </main>
+        </main>
     </div>
 
+    <!-- Modal de Finalização -->
     <div id="order-complete-modal"
         class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
         <div
@@ -426,7 +574,63 @@
     </div>
 
     <script src="admin.js"></script>
+    <script src="graficos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-</body>
+    
+    <!-- ===== SCRIPTS PARA CAMPOS DINÂMICOS DE ADICIONAIS/TAMANHOS ===== -->
+    <script>
+        // Função para adicionar campo de adicional
+        function addAdicionalField(nome = '', preco = '') {
+            const container = document.getElementById('adicionais-container');
+            if (!container) return;
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'adicional-row';
+            div.innerHTML = `
+                <input type="text" placeholder="Nome (ex: Morango)" value="${nome}" class="adicional-nome" data-idx="${index}">
+                <input type="number" step="0.01" placeholder="Preço (R$)" value="${preco}" class="adicional-preco" data-idx="${index}">
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(div);
+        }
 
+        // Função para adicionar campo de tamanho
+        function addTamanhoField(ml = '', label = '', acrescimo = '') {
+            const container = document.getElementById('tamanhos-container');
+            if (!container) return;
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'tamanho-row';
+            div.innerHTML = `
+                <input type="number" placeholder="ml" value="${ml}" class="tamanho-ml" data-idx="${index}">
+                <input type="text" placeholder="Label" value="${label}" class="tamanho-label" data-idx="${index}">
+                <input type="number" step="0.01" placeholder="+R$" value="${acrescimo}" class="tamanho-acrescimo" data-idx="${index}">
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Mostrar/ocultar seções conforme categoria selecionada
+        document.getElementById('prod-categoria')?.addEventListener('change', function() {
+            const cat = this.value;
+            const secAdicionais = document.getElementById('config-adicionais');
+            const secTamanhos = document.getElementById('config-tamanhos');
+            
+            if (cat === 'potes' || cat === 'copos') {
+                secAdicionais?.classList.remove('hidden');
+                secTamanhos?.classList.add('hidden');
+            } else if (cat === 'milkshakes' || cat === 'milkshakesespecial') {
+                secAdicionais?.classList.add('hidden');
+                secTamanhos?.classList.remove('hidden');
+            } else {
+                secAdicionais?.classList.add('hidden');
+                secTamanhos?.classList.add('hidden');
+            }
+        });
+
+        // Exportar funções para o admin.js
+        window.addAdicionalField = addAdicionalField;
+        window.addTamanhoField = addTamanhoField;
+    </script>
+</body>
 </html>
